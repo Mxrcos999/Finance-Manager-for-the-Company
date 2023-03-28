@@ -1,0 +1,12 @@
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\bin\Debug\net7.0\FinanceManager.Identity.deps.json
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\bin\Debug\net7.0\FinanceManager.Identity.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\bin\Debug\net7.0\FinanceManager.Identity.pdb
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\FinanceManager.Identity.csproj.AssemblyReference.cache
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\FinanceManager.Identity.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\FinanceManager.Identity.AssemblyInfoInputs.cache
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\FinanceManager.Identity.AssemblyInfo.cs
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\FinanceManager.Identity.csproj.CoreCompileInputs.cache
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\FinanceManager.Identity.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\refint\FinanceManager.Identity.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\FinanceManager.Identity.pdb
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\ref\FinanceManager.Identity.dll

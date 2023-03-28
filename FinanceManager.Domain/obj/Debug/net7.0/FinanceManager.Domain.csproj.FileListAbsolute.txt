@@ -1,0 +1,12 @@
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\bin\Debug\net7.0\FinanceManager.Domain.deps.json
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\bin\Debug\net7.0\FinanceManager.Domain.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\bin\Debug\net7.0\FinanceManager.Domain.pdb
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\obj\Debug\net7.0\FinanceManager.Domain.csproj.AssemblyReference.cache
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\obj\Debug\net7.0\FinanceManager.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\obj\Debug\net7.0\FinanceManager.Domain.AssemblyInfoInputs.cache
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\obj\Debug\net7.0\FinanceManager.Domain.AssemblyInfo.cs
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\obj\Debug\net7.0\FinanceManager.Domain.csproj.CoreCompileInputs.cache
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\obj\Debug\net7.0\FinanceManager.Domain.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\obj\Debug\net7.0\refint\FinanceManager.Domain.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\obj\Debug\net7.0\FinanceManager.Domain.pdb
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Domain\obj\Debug\net7.0\ref\FinanceManager.Domain.dll
