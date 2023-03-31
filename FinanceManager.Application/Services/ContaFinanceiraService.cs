@@ -1,18 +1,20 @@
-﻿using FinanceManager.Infrastructure.Repository;
+﻿using FinanceManager.Application.DTOs.DtosResponse;
+using FinanceManager.Application.Interfaces;
+using FinanceManager.Domain;
 
 namespace FinanceManager.Application.Services;
 
-public class ContaFinanceiraService
+public class ContaFinanceiraService : IContaFinanceiraService
 {
-    private readonly ContaFinanceiraRepository _contaFinanceiraRepository;
+    private readonly IContaFinanceiraRepository _contaFinanceiraRepository;
 
-    public ContaFinanceiraService(ContaFinanceiraRepository contaFinanceiraRepository)
+    public ContaFinanceiraService(IContaFinanceiraRepository contaFinanceiraRepository)
     {
         _contaFinanceiraRepository = contaFinanceiraRepository;
     }
 
-    public async Task ObterContasFinanceiras()
+    public async Task<IEnumerable<ContaFinanceiraResponse>> ObterContasFinanceiras()
     {
-        //será implementado
+        return await _contaFinanceiraRepository.ObtemContaFinanceira();
     }
 }

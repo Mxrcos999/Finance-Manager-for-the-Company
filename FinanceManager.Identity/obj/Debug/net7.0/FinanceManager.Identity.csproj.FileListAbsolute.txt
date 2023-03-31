@@ -10,3 +10,8 @@ C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\refint\FinanceManager.Identity.dll
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\FinanceManager.Identity.pdb
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\ref\FinanceManager.Identity.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\bin\Debug\net7.0\FinanceManager.Application.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\bin\Debug\net7.0\FinanceManager.Domain.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\bin\Debug\net7.0\FinanceManager.Application.pdb
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\bin\Debug\net7.0\FinanceManager.Domain.pdb
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Identity\obj\Debug\net7.0\FinanceManager.Identity.csproj.CopyComplete

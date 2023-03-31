@@ -4,6 +4,10 @@ namespace FinanceManager.Domain;
 
 public class Categoria : EntidadeBase
 {
+    public Categoria()
+    {
+        
+    }
     public string Nome { get; set; }
     public string Descricao { get; set; }
     //0 - entrada|1-saida
