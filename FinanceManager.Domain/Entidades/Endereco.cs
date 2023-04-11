@@ -1,6 +1,6 @@
 ﻿using FinanceManager.Domain.Utils;
 
-namespace FinanceManager.Domain;
+namespace FinanceManager.Domain.Entidades;
 
 public class Endereco : EntidadeBase
 {

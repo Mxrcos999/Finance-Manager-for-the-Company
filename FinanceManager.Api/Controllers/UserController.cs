@@ -9,9 +9,11 @@ namespace FinanceManager.Api.Controllers
     public class UserController : Controller
     {
         private readonly IIdentityService _identityService;
-        public UserController(IIdentityService identityService)
+        private readonly IEmailSender _emailSender;
+        public UserController(IIdentityService identityService, IEmailSender emailSender)
         {
             _identityService = identityService;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
@@ -25,6 +27,20 @@ namespace FinanceManager.Api.Controllers
             if (result)
                 return Ok(result);
             return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("Users/confirmEmail")]
+        public async Task<IActionResult> ConfirmEmailUser([FromBody] string email)
+        {
+
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest);
+
+            var result = await _identityService.ConfirmarEmail(email);
+            var link = Url.Action("ConfirmEmail", "UserController", new { token = result }, Request.Scheme);
+            await _emailSender.SendEmailAsync(email, "Confirmação de email", $"clique aqui {link}");
+            return Ok(result);
         }
 
         [HttpPost]

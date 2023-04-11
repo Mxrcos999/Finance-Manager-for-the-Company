@@ -1,6 +1,7 @@
 ﻿using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain;
+using FinanceManager.Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceManager.Infrastructure.Repository;

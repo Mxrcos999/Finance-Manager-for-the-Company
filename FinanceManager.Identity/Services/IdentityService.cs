@@ -1,9 +1,12 @@
 ﻿using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
-using FinanceManager.Domain;
+using FinanceManager.Domain.Entidades;
 using FinanceManager.Identity.Configurations;
 using FinanceManager.Identity.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,12 +18,14 @@ public class IdentityService : IIdentityService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JwtOptions _jwtOptions;
+    private readonly LinkGenerator _linkGenerator;
 
-    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions)
+    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, LinkGenerator linkGenerator)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
+        _linkGenerator = linkGenerator;
     }
 
     public async Task<UserLoginResponse> LoginAsync(UserLoginRequest userLogin)
@@ -62,14 +67,24 @@ public class IdentityService : IIdentityService
             Email = userRegister.Email,
             EmailConfirmed = true,
             PasswordHash = userRegister.Senha,
-            Enderecos = userRegister.Enderecos,
-            Telefones = userRegister.Telefones
+            Pessoa = userRegister.Pessoa,
         };
         IdentityResult result = await _userManager.CreateAsync(applicationUser, userRegister.Senha);
         if (result.Succeeded)
+        {
             return true;
+        }
 
         return false;
+    }
+
+    public async Task<string> ConfirmarEmail(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        user.EmailConfirmed = false;
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+        return token;
     }
     private async Task<UserLoginResponse> GerarCredenciais(string email)
     {

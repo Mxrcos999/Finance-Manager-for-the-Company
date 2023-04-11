@@ -1,6 +1,6 @@
 ﻿using FinanceManager.Domain.Utils;
 
-namespace FinanceManager.Domain;
+namespace FinanceManager.Domain.Entidades;
 
 public class Saida : EntidadeBase
 {
@@ -15,6 +15,6 @@ public class Saida : EntidadeBase
     }
     public Saida()
     {
-        
+
     }
 }
