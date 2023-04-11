@@ -1,8 +1,6 @@
-﻿using FinanceManager.Domain.Utils;
+﻿namespace FinanceManager.Application.DTOs.DtosCadastro;
 
-namespace FinanceManager.Domain.Entidades;
-
-public class PessoaJuridica : EntidadeBase
+public sealed class PessoaJuridicaCadastroRequest
 {
     public string RazaoSocial { get; set; }
     public string Cnpj { get; set; }

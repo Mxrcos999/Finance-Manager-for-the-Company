@@ -61,13 +61,14 @@ public class IdentityService : IIdentityService
 
     public async Task<bool> RegisterUserAsync(UserRegisterRequest userRegister)
     {
+        //var pessoa = await ConvertePessoa(userRegister.Pessoa);
         ApplicationUser applicationUser = new ApplicationUser
         {
             UserName = userRegister.Email,
             Email = userRegister.Email,
             EmailConfirmed = true,
             PasswordHash = userRegister.Senha,
-            Pessoa = userRegister.Pessoa,
+            //Pessoa = pessoa,
         };
         IdentityResult result = await _userManager.CreateAsync(applicationUser, userRegister.Senha);
         if (result.Succeeded)
@@ -78,6 +79,24 @@ public class IdentityService : IIdentityService
         return false;
     }
 
+    public async Task ConverteObjetos(PessoaCadastroRequest pessoa)
+    {
+        var enderecos = new List<Endereco>();
+        var telefones = new List<Telefone>();
+
+        foreach (var enderecoAtual in pessoa.Enderecos)
+        {
+            enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.TipoLogradouro));
+
+        }
+        
+        foreach(var telefoneAtual in pessoa.Telefones)
+        {
+            telefones.Add(new Telefone(telefoneAtual.Ddd, telefoneAtual.Ddi,telefoneAtual.Numero, telefoneAtual.Principal, telefoneAtual.Ramal, telefoneAtual.TipoTelefone));
+
+        }
+      
+    }
     public async Task<string> ConfirmarEmail(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
