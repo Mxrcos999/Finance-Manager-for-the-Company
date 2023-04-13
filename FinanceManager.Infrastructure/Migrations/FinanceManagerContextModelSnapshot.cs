@@ -294,6 +294,10 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("pessoasfisicas");
@@ -308,7 +312,6 @@ namespace FinanceManager.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Cnpj")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("DataHoraAlteração")
@@ -317,14 +320,13 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.Property<DateTime>("DataHoraCadastro")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("FaturamentoANual")
+                    b.Property<decimal?>("FaturamentoAnual")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("FaturamentoMensal")
+                    b.Property<decimal?>("FaturamentoMensal")
                         .HasColumnType("numeric");
 
                     b.Property<string>("RazaoSocial")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

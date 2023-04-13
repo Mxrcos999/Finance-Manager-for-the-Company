@@ -67,3 +67,4 @@ C:\Users\marco\source\repos\FinanceManager\FinanceManager.Api\bin\Debug\net7.0\M
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Api\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Api\bin\Debug\net7.0\FinanceManager.Identity.dll
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Api\bin\Debug\net7.0\FinanceManager.Identity.pdb
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Api\bin\Debug\net7.0\AutoMapper.dll

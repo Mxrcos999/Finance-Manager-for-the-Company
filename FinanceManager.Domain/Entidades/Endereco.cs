@@ -15,4 +15,9 @@ public class Endereco : EntidadeBase
         Cep = cep;
         TipoLogradouro = tipoLogradouro;
     }
+
+    public Endereco()
+    {
+        
+    }
 }

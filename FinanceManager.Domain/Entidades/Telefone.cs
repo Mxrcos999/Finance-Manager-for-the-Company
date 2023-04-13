@@ -20,4 +20,8 @@ public class Telefone : EntidadeBase
         Ramal = ramal;
         TipoTelefone = tipoTelefone;
     }
+    public Telefone()
+    {
+        
+    }
 }

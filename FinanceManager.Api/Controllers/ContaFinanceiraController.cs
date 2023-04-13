@@ -1,9 +1,11 @@
 ﻿using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceManager.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/conta-financeira")]
     public class ContaFinanceiraController : Controller

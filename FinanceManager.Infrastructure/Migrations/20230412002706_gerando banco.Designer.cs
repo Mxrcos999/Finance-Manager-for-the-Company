@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceManager.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceManagerContext))]
-    [Migration("20230411000108_estrutura de pessoa")]
-    partial class estruturadepessoa
+    [Migration("20230412002706_gerando banco")]
+    partial class gerandobanco
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -297,6 +297,10 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("pessoasfisicas");
@@ -320,10 +324,10 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.Property<DateTime>("DataHoraCadastro")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("FaturamentoANual")
+                    b.Property<decimal?>("FaturamentoAnual")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("FaturamentoMensal")
+                    b.Property<decimal?>("FaturamentoMensal")
                         .HasColumnType("numeric");
 
                     b.Property<string>("RazaoSocial")

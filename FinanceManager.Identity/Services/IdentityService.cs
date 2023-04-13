@@ -3,9 +3,7 @@ using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Domain.Entidades;
 using FinanceManager.Identity.Configurations;
 using FinanceManager.Identity.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
@@ -61,15 +59,16 @@ public class IdentityService : IIdentityService
 
     public async Task<bool> RegisterUserAsync(UserRegisterRequest userRegister)
     {
-        //var pessoa = await ConvertePessoa(userRegister.Pessoa);
+        var pessoa = await ConverteObjetos(userRegister.Pessoa);
         ApplicationUser applicationUser = new ApplicationUser
         {
             UserName = userRegister.Email,
             Email = userRegister.Email,
             EmailConfirmed = true,
             PasswordHash = userRegister.Senha,
-            //Pessoa = pessoa,
+            Pessoa = pessoa,
         };
+
         IdentityResult result = await _userManager.CreateAsync(applicationUser, userRegister.Senha);
         if (result.Succeeded)
         {
@@ -79,23 +78,37 @@ public class IdentityService : IIdentityService
         return false;
     }
 
-    public async Task ConverteObjetos(PessoaCadastroRequest pessoa)
+    public async Task<Pessoa> ConverteObjetos(PessoaCadastroRequest pessoa)
     {
         var enderecos = new List<Endereco>();
         var telefones = new List<Telefone>();
-
+        var pessoaJuridica = new PessoaJuridica();
+        var pessoaFisica = new PessoaFisica();
         foreach (var enderecoAtual in pessoa.Enderecos)
         {
             enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.TipoLogradouro));
-
         }
-        
-        foreach(var telefoneAtual in pessoa.Telefones)
+
+        foreach (var telefoneAtual in pessoa.Telefones)
         {
-            telefones.Add(new Telefone(telefoneAtual.Ddd, telefoneAtual.Ddi,telefoneAtual.Numero, telefoneAtual.Principal, telefoneAtual.Ramal, telefoneAtual.TipoTelefone));
-
+            telefones.Add(new Telefone(telefoneAtual.Ddd, telefoneAtual.Ddi, telefoneAtual.Numero, telefoneAtual.Principal, telefoneAtual.Ramal, telefoneAtual.TipoTelefone));
         }
-      
+
+        if(pessoa.PessoaJuridica != null)      
+            pessoaJuridica = new PessoaJuridica(pessoa.PessoaJuridica.RazaoSocial, pessoa.PessoaJuridica.Cnpj, pessoa.PessoaJuridica.FaturamentoMensal, pessoa.PessoaJuridica.FaturamentoAnual);
+        
+        else  
+             pessoaFisica = new PessoaFisica(pessoa.PessoaFisica.Cpf, pessoa.PessoaFisica.Nome, pessoa.PessoaFisica.DataNascimento, pessoa.PessoaFisica.Empregador);
+
+        var pessoaCadastrar = new Pessoa()
+        {
+            Email = pessoa.Email,
+            Enderecos = enderecos,
+            PessoaFisica = pessoaFisica,
+            PessoaJuridica = pessoaJuridica,
+            Telefones = telefones
+        };
+        return pessoaCadastrar;
     }
     public async Task<string> ConfirmarEmail(string email)
     {
