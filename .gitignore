@@ -1,0 +1,42 @@
+# arquivos e pastas que devem ser ignorados pelo Git
+
+## Arquivos gerados pelo Visual Studio ##
+*.obj
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*._mp
+*._mmc
+*.log
+*.tmp
+*.docstates
+
+## Arquivos de compilação ##
+bin/
+obj/
+
+## Arquivos de depuração ##
+[Dd]ebug/
+[Rr]elease/
+*.sln.ide
+
+## Arquivos NuGet Package Manager ##
+*.nupkg
+packages/
+
+## Arquivos de análise de código ##
+*.sln.docstates.suo
+
+## Arquivos de teste ##
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
