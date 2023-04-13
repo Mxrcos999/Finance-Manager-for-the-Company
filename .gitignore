@@ -396,3 +396,7 @@ FodyWeavers.xsd
  
 # Piloto JetBrains
 * .sln.iml
+/.vs/FinanceManager/FileContentIndex/01ec3f13-6429-4a5c-9777-734d426ed473.vsidx
+/.vs/FinanceManager/FileContentIndex/3f9df0e7-0c1f-4d6e-ab67-e6e8a253f819.vsidx
+/.vs/FinanceManager/FileContentIndex
+/FinanceManager.Api/bin/Debug/net7.0
