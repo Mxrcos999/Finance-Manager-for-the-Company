@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceManager.Api.Controllers
 {
+    //CONTROLLER
     [Authorize]
     [ApiController]
     [Route("api/conta-financeira")]
@@ -15,7 +16,7 @@ namespace FinanceManager.Api.Controllers
         {
             _contaFinanceiraService = contaFinanceiraService;
         }
-
+        //ENDPOINT
         [HttpGet]
         public async Task<IEnumerable<ContaFinanceiraResponse>> GetContaFinanceirasASync()
         {

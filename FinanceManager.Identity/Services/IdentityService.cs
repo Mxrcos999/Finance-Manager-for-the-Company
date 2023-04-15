@@ -57,19 +57,11 @@ public class IdentityService : IIdentityService
         return userLoginResponse;
     }
 
-    public async Task<bool> RegisterUserAsync(UserRegisterRequest userRegister)
+    public async Task<bool> CadastrarUsuario(UserCadastroRequest userRegister)
     {
-        var pessoa = await ConverteObjetos(userRegister.Pessoa);
-        ApplicationUser applicationUser = new ApplicationUser
-        {
-            UserName = userRegister.Email,
-            Email = userRegister.Email,
-            EmailConfirmed = true,
-            PasswordHash = userRegister.Senha,
-            Pessoa = pessoa,
-        };
+        var user = await ConverteObjetos(userRegister);
 
-        IdentityResult result = await _userManager.CreateAsync(applicationUser, userRegister.Senha);
+        IdentityResult result = await _userManager.CreateAsync(user, userRegister.Senha);
         if (result.Succeeded)
         {
             return true;
@@ -78,38 +70,98 @@ public class IdentityService : IIdentityService
         return false;
     }
 
-    public async Task<Pessoa> ConverteObjetos(PessoaCadastroRequest pessoa)
+    private async Task<PessoaFisica> CriaPessoaFisica(UserCadastroRequest userRegister)
     {
+        var empregadores = new List<Empregador>();
         var enderecos = new List<Endereco>();
         var telefones = new List<Telefone>();
-        var pessoaJuridica = new PessoaJuridica();
-        var pessoaFisica = new PessoaFisica();
-        foreach (var enderecoAtual in pessoa.Enderecos)
+
+        foreach (var enderecoAtual in userRegister.PessoaFisica.Enderecos)
         {
             enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.TipoLogradouro));
         }
 
-        foreach (var telefoneAtual in pessoa.Telefones)
+        foreach (var telefoneAtual in userRegister.PessoaFisica.Telefones)
         {
             telefones.Add(new Telefone(telefoneAtual.Ddd, telefoneAtual.Ddi, telefoneAtual.Numero, telefoneAtual.Principal, telefoneAtual.Ramal, telefoneAtual.TipoTelefone));
         }
-
-        if(pessoa.PessoaJuridica != null)      
-            pessoaJuridica = new PessoaJuridica(pessoa.PessoaJuridica.RazaoSocial, pessoa.PessoaJuridica.Cnpj, pessoa.PessoaJuridica.FaturamentoMensal, pessoa.PessoaJuridica.FaturamentoAnual);
-        
-        else  
-             pessoaFisica = new PessoaFisica(pessoa.PessoaFisica.Cpf, pessoa.PessoaFisica.Nome, pessoa.PessoaFisica.DataNascimento, pessoa.PessoaFisica.Empregador);
-
-        var pessoaCadastrar = new Pessoa()
+        foreach (var empregadorAtual in userRegister.PessoaFisica.Empregador)
         {
-            Email = pessoa.Email,
-            Enderecos = enderecos,
-            PessoaFisica = pessoaFisica,
-            PessoaJuridica = pessoaJuridica,
-            Telefones = telefones
-        };
-        return pessoaCadastrar;
+            empregadores.Add(new Empregador
+                (empregadorAtual.RazaoSocial,
+                empregadorAtual.Cnpj,
+                empregadorAtual.EmpresaAtual,
+                empregadorAtual.ValorPago));
+        }
+        var pessoaFisica = new PessoaFisica
+              (userRegister.PessoaFisica.Cpf,
+              userRegister.PessoaFisica.Nome,
+              userRegister.PessoaFisica.DataNascimento,
+              empregadores,
+              enderecos,
+              telefones,
+              userRegister.PessoaFisica.Email);
+
+        return pessoaFisica;
+    }   
+    
+    private async Task<PessoaJuridica> CriaPessoaJuridica(UserCadastroRequest userRegister)
+    {
+        var enderecos = new List<Endereco>();
+        var telefones = new List<Telefone>();
+
+        foreach (var enderecoAtual in userRegister.PessoaJuridica.Enderecos)
+        {
+            enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.TipoLogradouro));
+        }
+
+        foreach (var telefoneAtual in userRegister.PessoaJuridica.Telefones)
+        {
+            telefones.Add(new Telefone(telefoneAtual.Ddd, telefoneAtual.Ddi, telefoneAtual.Numero, telefoneAtual.Principal, telefoneAtual.Ramal, telefoneAtual.TipoTelefone));
+        }
+        var pessoaJuridica = new PessoaJuridica
+                       (userRegister.PessoaJuridica.RazaoSocial,
+                       userRegister.PessoaJuridica.Cnpj,
+                       userRegister.PessoaJuridica.FaturamentoMensal,
+                       userRegister.PessoaJuridica.FaturamentoAnual,
+                       enderecos,
+                       telefones,
+                       userRegister.PessoaJuridica.Email);
+
+        return pessoaJuridica;
     }
+
+    private async Task<ApplicationUser> ConverteObjetos(UserCadastroRequest userRegister)
+    {
+        var pessoaFisica = new PessoaFisica();
+        var pessoaJuridica = new PessoaJuridica();
+        var appUser = new ApplicationUser();
+        
+        if (userRegister.TipoUsuario == UserCadastroRequest.TipoUsuarioEnum.PessoaFisica)
+        {
+            pessoaFisica = await CriaPessoaFisica(userRegister);
+            appUser = new ApplicationUser()
+            {
+                Email = userRegister.Email,
+                PessoaFisica = pessoaFisica,
+                UserName = userRegister.Email
+            };
+        }
+        else
+        {
+            pessoaJuridica = await CriaPessoaJuridica(userRegister);
+
+            appUser = new ApplicationUser()
+            {
+                Email = userRegister.Email,
+                PessoaJuridica = pessoaJuridica,
+                UserName = userRegister.Email
+
+            };
+        }
+        return appUser;
+    }
+
     public async Task<string> ConfirmarEmail(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -118,6 +170,7 @@ public class IdentityService : IIdentityService
 
         return token;
     }
+
     private async Task<UserLoginResponse> GerarCredenciais(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);

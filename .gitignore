@@ -400,3 +400,7 @@ FodyWeavers.xsd
 /.vs/FinanceManager/FileContentIndex/3f9df0e7-0c1f-4d6e-ab67-e6e8a253f819.vsidx
 /.vs/FinanceManager/FileContentIndex
 /FinanceManager.Api/bin/Debug/net7.0
+/.vs/FinanceManager/DesignTimeBuild/.dtbcache.v2
+/.vs/FinanceManager/DesignTimeBuild/.dtbcache.v2
+/.gitignore
+/.vs/FinanceManager/v17/.suo

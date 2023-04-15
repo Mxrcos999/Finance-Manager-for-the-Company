@@ -18,12 +18,12 @@ namespace FinanceManager.Api.Controllers
 
         [HttpPost]
         [Route("Users")]
-        public async Task<IActionResult> RegisterUser(UserRegisterRequest model)
+        public async Task<IActionResult> RegisterUser(UserCadastroRequest model)
         {
             if (!ModelState.IsValid)
                 return StatusCode(StatusCodes.Status400BadRequest);
 
-            var result = await _identityService.RegisterUserAsync(model);
+            var result = await _identityService.CadastrarUsuario(model);
             if (result)
                 return Ok(result);
             return BadRequest();

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FinanceManager.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceManager.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceManagerContext))]
-    partial class FinanceManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20230415183424_gerando banco")]
+    partial class gerandobanco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,6 +65,9 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.Property<int?>("PessoaFisicaId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("PessoaId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("PessoaJuridicaId")
                         .HasColumnType("integer");
 
@@ -95,6 +101,8 @@ namespace FinanceManager.Infrastructure.Migrations
 
                     b.HasIndex("PessoaFisicaId")
                         .IsUnique();
+
+                    b.HasIndex("PessoaId");
 
                     b.HasIndex("PessoaJuridicaId");
 
@@ -144,9 +152,6 @@ namespace FinanceManager.Infrastructure.Migrations
 
                     b.Property<DateTime>("DataHoraCadastro")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("Saldo")
-                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -217,10 +222,7 @@ namespace FinanceManager.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("PessoaFisicaId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("PessoaJuridicaId")
+                    b.Property<int?>("PessoaId")
                         .HasColumnType("integer");
 
                     b.Property<string>("TipoLogradouro")
@@ -229,9 +231,7 @@ namespace FinanceManager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PessoaFisicaId");
-
-                    b.HasIndex("PessoaJuridicaId");
+                    b.HasIndex("PessoaId");
 
                     b.ToTable("enderecos");
                 });
@@ -271,7 +271,7 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.ToTable("entradas");
                 });
 
-            modelBuilder.Entity("FinanceManager.Domain.Entidades.PessoaFisica", b =>
+            modelBuilder.Entity("FinanceManager.Domain.Entidades.Pessoa", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -279,75 +279,27 @@ namespace FinanceManager.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ContaFinanceiraId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Cpf")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("DataHoraAlteração")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DataHoraCadastro")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<List<string>>("Email")
                         .IsRequired()
                         .HasColumnType("text[]");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ContaFinanceiraId");
+                    b.ToTable("pessoas");
 
-                    b.ToTable("pessoasfisicas");
-                });
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Pessoa");
 
-            modelBuilder.Entity("FinanceManager.Domain.Entidades.PessoaJuridica", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Cnpj")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("ContaFinanceiraId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("DataHoraAlteração")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DataHoraCadastro")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<List<string>>("Email")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
-                    b.Property<decimal?>("FaturamentoAnual")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal?>("FaturamentoMensal")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("RazaoSocial")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContaFinanceiraId");
-
-                    b.ToTable("pessoasjuridicas");
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("FinanceManager.Domain.Entidades.Saida", b =>
@@ -411,10 +363,7 @@ namespace FinanceManager.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("PessoaFisicaId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("PessoaJuridicaId")
+                    b.Property<int?>("PessoaId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("Principal")
@@ -430,9 +379,7 @@ namespace FinanceManager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PessoaFisicaId");
-
-                    b.HasIndex("PessoaJuridicaId");
+                    b.HasIndex("PessoaId");
 
                     b.ToTable("telefones");
                 });
@@ -569,15 +516,60 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FinanceManager.Domain.Entidades.PessoaFisica", b =>
+                {
+                    b.HasBaseType("FinanceManager.Domain.Entidades.Pessoa");
+
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasDiscriminator().HasValue("PessoaFisica");
+                });
+
+            modelBuilder.Entity("FinanceManager.Domain.Entidades.PessoaJuridica", b =>
+                {
+                    b.HasBaseType("FinanceManager.Domain.Entidades.Pessoa");
+
+                    b.Property<string>("Cnpj")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("FaturamentoAnual")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal?>("FaturamentoMensal")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("RazaoSocial")
+                        .HasColumnType("text");
+
+                    b.HasDiscriminator().HasValue("PessoaJuridica");
+                });
+
             modelBuilder.Entity("FinanceManager.Domain.Entidades.ApplicationUser", b =>
                 {
                     b.HasOne("FinanceManager.Domain.Entidades.PessoaFisica", "PessoaFisica")
                         .WithOne("User")
                         .HasForeignKey("FinanceManager.Domain.Entidades.ApplicationUser", "PessoaFisicaId");
 
+                    b.HasOne("FinanceManager.Domain.Entidades.Pessoa", "Pessoa")
+                        .WithMany()
+                        .HasForeignKey("PessoaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FinanceManager.Domain.Entidades.PessoaJuridica", "PessoaJuridica")
                         .WithMany()
                         .HasForeignKey("PessoaJuridicaId");
+
+                    b.Navigation("Pessoa");
 
                     b.Navigation("PessoaFisica");
 
@@ -593,13 +585,9 @@ namespace FinanceManager.Infrastructure.Migrations
 
             modelBuilder.Entity("FinanceManager.Domain.Entidades.Endereco", b =>
                 {
-                    b.HasOne("FinanceManager.Domain.Entidades.PessoaFisica", null)
+                    b.HasOne("FinanceManager.Domain.Entidades.Pessoa", null)
                         .WithMany("Enderecos")
-                        .HasForeignKey("PessoaFisicaId");
-
-                    b.HasOne("FinanceManager.Domain.Entidades.PessoaJuridica", null)
-                        .WithMany("Enderecos")
-                        .HasForeignKey("PessoaJuridicaId");
+                        .HasForeignKey("PessoaId");
                 });
 
             modelBuilder.Entity("FinanceManager.Domain.Entidades.Entrada", b =>
@@ -615,24 +603,6 @@ namespace FinanceManager.Infrastructure.Migrations
                         .HasForeignKey("ContaFinanceiraId");
 
                     b.Navigation("Categorias");
-                });
-
-            modelBuilder.Entity("FinanceManager.Domain.Entidades.PessoaFisica", b =>
-                {
-                    b.HasOne("FinanceManager.Domain.Entidades.ContaFinanceira", "ContaFinanceira")
-                        .WithMany()
-                        .HasForeignKey("ContaFinanceiraId");
-
-                    b.Navigation("ContaFinanceira");
-                });
-
-            modelBuilder.Entity("FinanceManager.Domain.Entidades.PessoaJuridica", b =>
-                {
-                    b.HasOne("FinanceManager.Domain.Entidades.ContaFinanceira", "ContaFinanceira")
-                        .WithMany()
-                        .HasForeignKey("ContaFinanceiraId");
-
-                    b.Navigation("ContaFinanceira");
                 });
 
             modelBuilder.Entity("FinanceManager.Domain.Entidades.Saida", b =>
@@ -652,13 +622,9 @@ namespace FinanceManager.Infrastructure.Migrations
 
             modelBuilder.Entity("FinanceManager.Domain.Entidades.Telefone", b =>
                 {
-                    b.HasOne("FinanceManager.Domain.Entidades.PessoaFisica", null)
+                    b.HasOne("FinanceManager.Domain.Entidades.Pessoa", null)
                         .WithMany("Telefones")
-                        .HasForeignKey("PessoaFisicaId");
-
-                    b.HasOne("FinanceManager.Domain.Entidades.PessoaJuridica", null)
-                        .WithMany("Telefones")
-                        .HasForeignKey("PessoaJuridicaId");
+                        .HasForeignKey("PessoaId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -719,23 +685,19 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.Navigation("Saidas");
                 });
 
+            modelBuilder.Entity("FinanceManager.Domain.Entidades.Pessoa", b =>
+                {
+                    b.Navigation("Enderecos");
+
+                    b.Navigation("Telefones");
+                });
+
             modelBuilder.Entity("FinanceManager.Domain.Entidades.PessoaFisica", b =>
                 {
                     b.Navigation("Empregador");
 
-                    b.Navigation("Enderecos");
-
-                    b.Navigation("Telefones");
-
                     b.Navigation("User")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FinanceManager.Domain.Entidades.PessoaJuridica", b =>
-                {
-                    b.Navigation("Enderecos");
-
-                    b.Navigation("Telefones");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,7 +17,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         _context = context;
         _contaFinanceiras = context.Set<ContaFinanceira>();
     }
-
+    //REPOSITORY
     public async Task<IEnumerable<ContaFinanceiraResponse>> ObtemContaFinanceira()
     {
         var contas = from Contas in _contaFinanceiras
