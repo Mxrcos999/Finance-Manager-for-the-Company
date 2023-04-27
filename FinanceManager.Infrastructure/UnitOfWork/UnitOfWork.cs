@@ -1,5 +1,4 @@
 ﻿using FinanceManager.Application.Interfaces;
-using FinanceManager.Infrastructure;
 
 namespace FinanceManager.Infrastructure;
 
@@ -12,7 +11,7 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
-    public async Task<bool> Commit()
+    public async Task<bool> CommitAsync()
     {
         var sucess = (await _context.SaveChangesAsync()) > 0;
         return sucess;

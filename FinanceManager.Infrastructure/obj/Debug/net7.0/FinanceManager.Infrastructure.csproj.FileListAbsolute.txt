@@ -2,7 +2,9 @@ C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Deb
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Debug\net7.0\FinanceManager.Infrastructure.runtimeconfig.json
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Debug\net7.0\FinanceManager.Infrastructure.dll
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Debug\net7.0\FinanceManager.Infrastructure.pdb
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Debug\net7.0\FinanceManager.Application.dll
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Debug\net7.0\FinanceManager.Domain.dll
+C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Debug\net7.0\FinanceManager.Application.pdb
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Debug\net7.0\FinanceManager.Domain.pdb
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\obj\Debug\net7.0\FinanceManager.Infrastructure.csproj.AssemblyReference.cache
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\obj\Debug\net7.0\FinanceManager.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
@@ -15,5 +17,3 @@ C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\obj\Deb
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\obj\Debug\net7.0\FinanceManager.Infrastructure.pdb
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\obj\Debug\net7.0\FinanceManager.Infrastructure.genruntimeconfig.cache
 C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\obj\Debug\net7.0\ref\FinanceManager.Infrastructure.dll
-C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Debug\net7.0\FinanceManager.Application.dll
-C:\Users\marco\source\repos\FinanceManager\FinanceManager.Infrastructure\bin\Debug\net7.0\FinanceManager.Application.pdb

@@ -34,13 +34,13 @@ namespace FinanceManager.Api.Controllers
         public async Task<IActionResult> ConfirmEmailUser([FromBody] string email)
         {
 
-            if (!ModelState.IsValid)
-                return StatusCode(StatusCodes.Status400BadRequest);
+            //if (!ModelState.IsValid)
+            //    return StatusCode(StatusCodes.Status400BadRequest);
 
-            var result = await _identityService.ConfirmarEmail(email);
-            var link = Url.Action("ConfirmEmail", "UserController", new { token = result }, Request.Scheme);
-            await _emailSender.SendEmailAsync(email, "Confirmação de email", $"clique aqui {link}");
-            return Ok(result);
+            //var result = await _identityService.ConfirmarEmail(email);
+            //var link = Url.Action("ConfirmEmail", "UserController", new { token = result }, Request.Scheme);
+            await _identityService.EnviaEmail();
+            return Ok();
         }
 
         [HttpPost]
@@ -53,7 +53,7 @@ namespace FinanceManager.Api.Controllers
             var result = await _identityService.LoginAsync(model);
             if (result.Success)
                 return Ok(result);
-            return BadRequest();
+            return BadRequest(result);
         }
     }
 }

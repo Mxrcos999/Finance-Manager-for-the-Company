@@ -6,10 +6,9 @@ public class PessoaJuridica : Pessoa
     public string? Cnpj { get; private set; }
     public decimal? FaturamentoMensal { get; private set; }
     public decimal? FaturamentoAnual { get; private set; }
-    public ContaFinanceira? ContaFinanceira { get; set; }
 
     public PessoaJuridica(string? razaoSocial, string? cnpj, decimal? faturamentoMensal,
-        decimal? faturamentoAnual, List<Endereco> enderecos, List<Telefone> telefones, List<string> emails)
+        decimal? faturamentoAnual, ICollection<Endereco> enderecos, ICollection<Telefone> telefones, string[] emails)
         : base(enderecos, telefones, emails)
     {
         RazaoSocial = razaoSocial;

@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceManager.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class gerandobanco : Migration
+    public partial class testederelacionamento : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,7 @@ namespace FinanceManager.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nome = table.Column<string>(type: "text", nullable: false),
                     Descricao = table.Column<string>(type: "text", nullable: false),
-                    Tipo = table.Column<char>(type: "character(1)", nullable: false),
+                    Tipo = table.Column<string>(type: "text", nullable: false),
                     DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -50,35 +50,13 @@ namespace FinanceManager.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Saldo = table.Column<decimal>(type: "numeric", nullable: true),
                     DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_contasfinanceiras", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "pessoas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Email = table.Column<List<string>>(type: "text[]", nullable: false),
-                    Discriminator = table.Column<string>(type: "text", nullable: false),
-                    Cpf = table.Column<string>(type: "text", nullable: true),
-                    Nome = table.Column<string>(type: "text", nullable: true),
-                    DataNascimento = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    RazaoSocial = table.Column<string>(type: "text", nullable: true),
-                    Cnpj = table.Column<string>(type: "text", nullable: true),
-                    FaturamentoMensal = table.Column<decimal>(type: "numeric", nullable: true),
-                    FaturamentoAnual = table.Column<decimal>(type: "numeric", nullable: true),
-                    DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_pessoas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,9 +87,9 @@ namespace FinanceManager.Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Valor = table.Column<decimal>(type: "numeric", nullable: false),
+                    ContaFinanceiraId = table.Column<int>(type: "integer", nullable: false),
                     DataEntrada = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CategoriasId = table.Column<int>(type: "integer", nullable: false),
-                    ContaFinanceiraId = table.Column<int>(type: "integer", nullable: true),
                     DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -126,6 +104,57 @@ namespace FinanceManager.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_entradas_contasfinanceiras_ContaFinanceiraId",
+                        column: x => x.ContaFinanceiraId,
+                        principalTable: "contasfinanceiras",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "pessoasfisicas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Cpf = table.Column<string>(type: "text", nullable: false),
+                    ContaFinanceiraId = table.Column<int>(type: "integer", nullable: false),
+                    Nome = table.Column<string>(type: "text", nullable: false),
+                    DataNascimento = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Email = table.Column<List<string>>(type: "text[]", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_pessoasfisicas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_pessoasfisicas_contasfinanceiras_ContaFinanceiraId",
+                        column: x => x.ContaFinanceiraId,
+                        principalTable: "contasfinanceiras",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "pessoasjuridicas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RazaoSocial = table.Column<string>(type: "text", nullable: true),
+                    Cnpj = table.Column<string>(type: "text", nullable: true),
+                    FaturamentoMensal = table.Column<decimal>(type: "numeric", nullable: true),
+                    FaturamentoAnual = table.Column<decimal>(type: "numeric", nullable: true),
+                    ContaFinanceiraId = table.Column<int>(type: "integer", nullable: true),
+                    DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Email = table.Column<List<string>>(type: "text[]", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_pessoasjuridicas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_pessoasjuridicas_contasfinanceiras_ContaFinanceiraId",
                         column: x => x.ContaFinanceiraId,
                         principalTable: "contasfinanceiras",
                         principalColumn: "Id");
@@ -161,11 +190,34 @@ namespace FinanceManager.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Empregador",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ValorPago = table.Column<decimal>(type: "numeric", nullable: false),
+                    RazaoSocial = table.Column<string>(type: "text", nullable: false),
+                    Cnpj = table.Column<string>(type: "text", nullable: false),
+                    EmpresaAtual = table.Column<bool>(type: "boolean", nullable: false),
+                    PessoaFisicaId = table.Column<int>(type: "integer", nullable: true),
+                    DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Empregador", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Empregador_pessoasfisicas_PessoaFisicaId",
+                        column: x => x.PessoaFisicaId,
+                        principalTable: "pessoasfisicas",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    PessoaId = table.Column<int>(type: "integer", nullable: false),
                     TipoUsuario = table.Column<int>(type: "integer", nullable: false),
                     PessoaFisicaId = table.Column<int>(type: "integer", nullable: true),
                     PessoaJuridicaId = table.Column<int>(type: "integer", nullable: true),
@@ -188,44 +240,14 @@ namespace FinanceManager.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_pessoas_PessoaFisicaId",
+                        name: "FK_AspNetUsers_pessoasfisicas_PessoaFisicaId",
                         column: x => x.PessoaFisicaId,
-                        principalTable: "pessoas",
+                        principalTable: "pessoasfisicas",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_pessoas_PessoaId",
-                        column: x => x.PessoaId,
-                        principalTable: "pessoas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_pessoas_PessoaJuridicaId",
+                        name: "FK_AspNetUsers_pessoasjuridicas_PessoaJuridicaId",
                         column: x => x.PessoaJuridicaId,
-                        principalTable: "pessoas",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Empregador",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ValorPago = table.Column<decimal>(type: "numeric", nullable: false),
-                    RazaoSocial = table.Column<string>(type: "text", nullable: false),
-                    Cnpj = table.Column<string>(type: "text", nullable: false),
-                    EmpresaAtual = table.Column<bool>(type: "boolean", nullable: false),
-                    PessoaFisicaId = table.Column<int>(type: "integer", nullable: true),
-                    DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Empregador", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Empregador_pessoas_PessoaFisicaId",
-                        column: x => x.PessoaFisicaId,
-                        principalTable: "pessoas",
+                        principalTable: "pessoasjuridicas",
                         principalColumn: "Id");
                 });
 
@@ -239,7 +261,9 @@ namespace FinanceManager.Infrastructure.Migrations
                     Numero = table.Column<string>(type: "text", nullable: false),
                     Cep = table.Column<string>(type: "text", nullable: false),
                     TipoLogradouro = table.Column<string>(type: "text", nullable: false),
-                    PessoaId = table.Column<int>(type: "integer", nullable: true),
+                    Uf = table.Column<string>(type: "text", nullable: false),
+                    PessoaFisicaId = table.Column<int>(type: "integer", nullable: true),
+                    PessoaJuridicaId = table.Column<int>(type: "integer", nullable: true),
                     DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -247,9 +271,14 @@ namespace FinanceManager.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_enderecos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_enderecos_pessoas_PessoaId",
-                        column: x => x.PessoaId,
-                        principalTable: "pessoas",
+                        name: "FK_enderecos_pessoasfisicas_PessoaFisicaId",
+                        column: x => x.PessoaFisicaId,
+                        principalTable: "pessoasfisicas",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_enderecos_pessoasjuridicas_PessoaJuridicaId",
+                        column: x => x.PessoaJuridicaId,
+                        principalTable: "pessoasjuridicas",
                         principalColumn: "Id");
                 });
 
@@ -265,7 +294,8 @@ namespace FinanceManager.Infrastructure.Migrations
                     Principal = table.Column<bool>(type: "boolean", nullable: false),
                     Ramal = table.Column<string>(type: "text", nullable: false),
                     TipoTelefone = table.Column<string>(type: "text", nullable: false),
-                    PessoaId = table.Column<int>(type: "integer", nullable: true),
+                    PessoaFisicaId = table.Column<int>(type: "integer", nullable: true),
+                    PessoaJuridicaId = table.Column<int>(type: "integer", nullable: true),
                     DataHoraCadastro = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DataHoraAlteração = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -273,9 +303,14 @@ namespace FinanceManager.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_telefones", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_telefones_pessoas_PessoaId",
-                        column: x => x.PessoaId,
-                        principalTable: "pessoas",
+                        name: "FK_telefones_pessoasfisicas_PessoaFisicaId",
+                        column: x => x.PessoaFisicaId,
+                        principalTable: "pessoasfisicas",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_telefones_pessoasjuridicas_PessoaJuridicaId",
+                        column: x => x.PessoaJuridicaId,
+                        principalTable: "pessoasjuridicas",
                         principalColumn: "Id");
                 });
 
@@ -402,11 +437,6 @@ namespace FinanceManager.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_PessoaId",
-                table: "AspNetUsers",
-                column: "PessoaId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_PessoaJuridicaId",
                 table: "AspNetUsers",
                 column: "PessoaJuridicaId");
@@ -423,9 +453,14 @@ namespace FinanceManager.Infrastructure.Migrations
                 column: "PessoaFisicaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_enderecos_PessoaId",
+                name: "IX_enderecos_PessoaFisicaId",
                 table: "enderecos",
-                column: "PessoaId");
+                column: "PessoaFisicaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_enderecos_PessoaJuridicaId",
+                table: "enderecos",
+                column: "PessoaJuridicaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_entradas_CategoriasId",
@@ -435,6 +470,17 @@ namespace FinanceManager.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_entradas_ContaFinanceiraId",
                 table: "entradas",
+                column: "ContaFinanceiraId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_pessoasfisicas_ContaFinanceiraId",
+                table: "pessoasfisicas",
+                column: "ContaFinanceiraId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_pessoasjuridicas_ContaFinanceiraId",
+                table: "pessoasjuridicas",
                 column: "ContaFinanceiraId");
 
             migrationBuilder.CreateIndex(
@@ -448,9 +494,14 @@ namespace FinanceManager.Infrastructure.Migrations
                 column: "ContaFinanceiraId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_telefones_PessoaId",
+                name: "IX_telefones_PessoaFisicaId",
                 table: "telefones",
-                column: "PessoaId");
+                column: "PessoaFisicaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_telefones_PessoaJuridicaId",
+                table: "telefones",
+                column: "PessoaJuridicaId");
         }
 
         /// <inheritdoc />
@@ -496,10 +547,13 @@ namespace FinanceManager.Infrastructure.Migrations
                 name: "categorias");
 
             migrationBuilder.DropTable(
-                name: "contasfinanceiras");
+                name: "pessoasfisicas");
 
             migrationBuilder.DropTable(
-                name: "pessoas");
+                name: "pessoasjuridicas");
+
+            migrationBuilder.DropTable(
+                name: "contasfinanceiras");
         }
     }
 }

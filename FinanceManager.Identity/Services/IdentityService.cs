@@ -3,6 +3,7 @@ using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Domain.Entidades;
 using FinanceManager.Identity.Configurations;
 using FinanceManager.Identity.Interfaces;
+using FinanceManager.ServicosExternos.ViaCep;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
@@ -16,16 +17,22 @@ public class IdentityService : IIdentityService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JwtOptions _jwtOptions;
+    private readonly IEmailSender _emailSender;
     private readonly LinkGenerator _linkGenerator;
 
-    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, LinkGenerator linkGenerator)
+    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, LinkGenerator linkGenerator, IEmailSender emailSender)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
         _linkGenerator = linkGenerator;
+        _emailSender = emailSender;
     }
 
+    public async Task EnviaEmail()
+    {
+          _emailSender.SendEmail("assunto","marcosfelipehd4@gmail.com", "stefanybia193@gmail.com", "envio de email espero que de certo");
+    }
     public async Task<UserLoginResponse> LoginAsync(UserLoginRequest userLogin)
     {
         SignInResult signInResult = await _signInManager.PasswordSignInAsync(userLogin.Email, userLogin.Password, isPersistent: false, lockoutOnFailure: true);
@@ -38,19 +45,19 @@ public class IdentityService : IIdentityService
         {
             if (signInResult.IsLockedOut)
             {
-                userLoginResponse.AddError("This account is locked.");
+                userLoginResponse.AddError("Esta conta está bloqueada.");
             }
             else if (signInResult.IsNotAllowed)
             {
-                userLoginResponse.AddError("This account doesn't have permission to sign-in.");
+                userLoginResponse.AddError("Esta conta não tem permissão para entrar.");
             }
             else if (signInResult.RequiresTwoFactor)
             {
-                userLoginResponse.AddError("Confirm your sign-in.");
+                userLoginResponse.AddError("Confirme seu email.");
             }
             else
             {
-                userLoginResponse.AddError("Username or password is incorrect.");
+                userLoginResponse.AddError("Nome de usuário ou senha estão incorretos.");
             }
         }
 
@@ -75,10 +82,9 @@ public class IdentityService : IIdentityService
         var empregadores = new List<Empregador>();
         var enderecos = new List<Endereco>();
         var telefones = new List<Telefone>();
-
         foreach (var enderecoAtual in userRegister.PessoaFisica.Enderecos)
         {
-            enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.TipoLogradouro));
+            enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.Uf, enderecoAtual.TipoLogradouro.ToString()));
         }
 
         foreach (var telefoneAtual in userRegister.PessoaFisica.Telefones)
@@ -112,7 +118,7 @@ public class IdentityService : IIdentityService
 
         foreach (var enderecoAtual in userRegister.PessoaJuridica.Enderecos)
         {
-            enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.TipoLogradouro));
+            enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.Uf, enderecoAtual.TipoLogradouro.ToString()));
         }
 
         foreach (var telefoneAtual in userRegister.PessoaJuridica.Telefones)

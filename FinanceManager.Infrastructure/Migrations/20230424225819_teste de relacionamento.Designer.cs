@@ -13,15 +13,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceManager.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceManagerContext))]
-    [Migration("20230415201342_relacionando contas financeiras")]
-    partial class relacionandocontasfinanceiras
+    [Migration("20230424225819_teste de relacionamento")]
+    partial class testederelacionamento
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -126,8 +126,9 @@ namespace FinanceManager.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<char>("Tipo")
-                        .HasColumnType("character(1)");
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -148,7 +149,7 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.Property<DateTime>("DataHoraCadastro")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("Saldo")
+                    b.Property<decimal?>("Saldo")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
@@ -230,6 +231,10 @@ namespace FinanceManager.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Uf")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PessoaFisicaId");
@@ -250,7 +255,7 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.Property<int>("CategoriasId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ContaFinanceiraId")
+                    b.Property<int>("ContaFinanceiraId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DataEntrada")
@@ -282,7 +287,7 @@ namespace FinanceManager.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ContaFinanceiraId")
+                    b.Property<int>("ContaFinanceiraId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Cpf")
@@ -308,7 +313,8 @@ namespace FinanceManager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContaFinanceiraId");
+                    b.HasIndex("ContaFinanceiraId")
+                        .IsUnique();
 
                     b.ToTable("pessoasfisicas");
                 });
@@ -613,18 +619,24 @@ namespace FinanceManager.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FinanceManager.Domain.Entidades.ContaFinanceira", null)
+                    b.HasOne("FinanceManager.Domain.Entidades.ContaFinanceira", "ContaFinanceira")
                         .WithMany("Entradas")
-                        .HasForeignKey("ContaFinanceiraId");
+                        .HasForeignKey("ContaFinanceiraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Categorias");
+
+                    b.Navigation("ContaFinanceira");
                 });
 
             modelBuilder.Entity("FinanceManager.Domain.Entidades.PessoaFisica", b =>
                 {
                     b.HasOne("FinanceManager.Domain.Entidades.ContaFinanceira", "ContaFinanceira")
-                        .WithMany()
-                        .HasForeignKey("ContaFinanceiraId");
+                        .WithOne()
+                        .HasForeignKey("FinanceManager.Domain.Entidades.PessoaFisica", "ContaFinanceiraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ContaFinanceira");
                 });

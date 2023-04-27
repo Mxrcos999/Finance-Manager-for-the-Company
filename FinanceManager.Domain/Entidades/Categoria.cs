@@ -1,15 +1,27 @@
 ﻿using FinanceManager.Domain.Utils;
+using static FinanceManager.Domain.Entidades.ContaFinanceira;
 
 namespace FinanceManager.Domain.Entidades;
 
 public class Categoria : EntidadeBase
 {
-    public Categoria()
-    {
+    public string Nome { get; private set; }
+    public string Descricao { get; private set; }
+    public string Tipo { get; private set; }
+    public int ContaFinanceiraId { get;  set; }
+    public ContaFinanceira ContaFinanceira { get;  set; }
+    public Categoria() {}
 
+    public Categoria(string nome, string descricao, string tipo)
+    {
+        Nome = nome;
+        Descricao = descricao;  
+        Tipo = tipo;    
     }
-    public string Nome { get; set; }
-    public string Descricao { get; set; }
-    //0 - entrada|1-saida
-    public char Tipo { get; set; }
+    public enum TipoCategoria
+    {
+        Entrada,
+        Saida
+    }
+
 }

@@ -1,13 +1,13 @@
-﻿using FinanceManager.Application.Interfaces;
+﻿using FinanceManager.Api.Extensions;
+using FinanceManager.Application.Interfaces;
 using FinanceManager.Application.Services;
+using FinanceManager.Domain.Entidades;
 using FinanceManager.Identity.Interfaces;
 using FinanceManager.Identity.Services;
-using FinanceManager.Infrastructure.Repository;
 using FinanceManager.Infrastructure;
+using FinanceManager.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using FinanceManager.Api.Extensions;
-using FinanceManager.Domain.Entidades;
 
 namespace FinanceManager.Api.Ioc
 {
@@ -21,6 +21,14 @@ namespace FinanceManager.Api.Ioc
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IContaFinanceiraService, ContaFinanceiraService>();
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+           options.TokenLifespan = TimeSpan.FromHours(2));
+
+
+            services.Configure<DataProtectionTokenProviderOptions>("EmailConfirmation", options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(2);
+            });
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
@@ -31,12 +39,16 @@ namespace FinanceManager.Api.Ioc
                 });
             });
             services.AddIdentity<ApplicationUser, IdentityRole>()
-           .AddDefaultTokenProviders()
            .AddDefaultUI()
            .AddEntityFrameworkStores<FinanceManagerContext>()
-           .AddDefaultTokenProviders()
            .AddUserManager<UserManager<ApplicationUser>>()
-           .AddSignInManager<SignInManager<ApplicationUser>>();
+           .AddSignInManager<SignInManager<ApplicationUser>>()
+           .AddDefaultTokenProviders()
+           .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("EmailConfirmation");
+
+
+
+
 
             services.AddAuthentication(configuration);
             services.AddAuthorizationPolicies();

@@ -1,5 +1,7 @@
 ﻿
+using FinanceManager.Domain.Entidades;
 using FinanceManager.Identity.Configurations;
+using FinanceManager.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -30,8 +32,8 @@ public static class AuthenticationSetup
             options.Password.RequireNonAlphanumeric = true;
             options.Password.RequireUppercase = true;
             options.Password.RequiredLength = 6;
-            options.SignIn.RequireConfirmedEmail = true;
-            options.Tokens.EmailConfirmationTokenProvider = "emailconfirmation";
+            options.SignIn.RequireConfirmedEmail = false;
+            options.Tokens.EmailConfirmationTokenProvider = "EmailConfirmationDataProtectorTokenProvider";
         });
 
         var tokenValidationParameters = new TokenValidationParameters
