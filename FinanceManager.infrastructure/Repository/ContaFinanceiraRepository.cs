@@ -12,6 +12,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
 {
     private readonly FinanceManagerContext _context;
     private readonly DbSet<ContaFinanceira> _contaFinanceiras;
+    private readonly DbSet<ApplicationUser> _user;
     private readonly IUnitOfWork _unitOfWork;
 
 
@@ -19,6 +20,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
     {
         _context = context;
         _contaFinanceiras = context.Set<ContaFinanceira>();
+        _user = context.Set<ApplicationUser>();
         _unitOfWork = unitOfWork;
     }
 
@@ -31,7 +33,6 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
                      select new ContaFinanceiraResponse()
                      {
                          Datalancamento = Contas.Datalancamento,
-                         SaldoAtual = Contas.SaldoAtual,
                          TipoLancamento = Contas.TipoLancamento.ToString(),
                          ValorLancamento = Contas.ValorLancamento,
                          Categoria = new CategoriaResponse()
@@ -45,16 +46,17 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         return contas.AsEnumerable();
     }
 
-    public async Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira)
+    public async Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira, ApplicationUser user)
     {
         try
         {
+            _user.Update(user);
             await _contaFinanceiras.AddAsync(contaFinanceira);
             await _unitOfWork.CommitAsync();
         }
         catch (Exception)
         {
-            _unitOfWork.Rollback();
+            await _unitOfWork.Rollback();
             throw;
         }
     }

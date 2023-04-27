@@ -16,6 +16,7 @@ public class ApplicationUser : IdentityUser
 
     [ForeignKey("PessoaJuridicaId")]
     public virtual PessoaJuridica? PessoaJuridica { get; set; }
+    public decimal Saldo { get; set; }
     public enum TipoUsuarioEnum
     {
         PessoaFisica,

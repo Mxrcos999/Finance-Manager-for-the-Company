@@ -5,6 +5,6 @@ namespace FinanceManager.Application.Interfaces;
 
 public interface IContaFinanceiraRepository
 {
-    Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira);
     Task<IEnumerable<ContaFinanceiraResponse>> ObtemContaFinanceira(string idUser);
+    Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira, ApplicationUser user);
 }

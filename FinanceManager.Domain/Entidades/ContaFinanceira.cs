@@ -6,7 +6,6 @@ namespace FinanceManager.Domain.Entidades;
 
 public class ContaFinanceira : EntidadeBase
 {
-    public decimal? SaldoAtual { get; private set; }
     public decimal ValorLancamento { get; private set; }
     public TiposLancamento TipoLancamento { get; private set; }
     public DateTime Datalancamento { get; private set; }
@@ -14,14 +13,14 @@ public class ContaFinanceira : EntidadeBase
     public ApplicationUser Usuario { get; set; }  
     public int CategoriaId { get; set; }
 
-    public Categoria Categorias { get;  set; }
+    public Categoria Categorias { get; set; }
 
     public ContaFinanceira() {}
-    public ContaFinanceira(decimal saldoAtual, decimal valorLancamento, TiposLancamento tipoLancamento, Categoria categoria)
+    public ContaFinanceira(decimal valorLancamento, TiposLancamento tipoLancamento, Categoria categoria)
     {
         ValorLancamento = valorLancamento;
         TipoLancamento = tipoLancamento;
-        Datalancamento = DateTime.Now;
+        Datalancamento = DateTime.Now.ToUniversalTime();
         Categorias = categoria;
     }
     public enum TiposLancamento

@@ -31,11 +31,10 @@ public class ContaFinanceiraController : Controller
     }
 
     [HttpPost]
-    [Route("api/entrada")]
+    [Route("api/historico/lancamento")]
     public async Task PostEntradaASync([FromBody] ContaFinanceiraCadastroRequest conta)
     {
         var usuarioLogado = await _userManager.GetUserAsync(User);
-        var id = usuarioLogado.Id;
-        await _contaFinanceiraService.IncluirContaFinanceira(conta, id);
+        await _contaFinanceiraService.IncluirContaFinanceira(conta, usuarioLogado);
     }
 }

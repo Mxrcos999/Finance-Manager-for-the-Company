@@ -20,16 +20,28 @@ public class ContaFinanceiraService : IContaFinanceiraService
         return await _contaFinanceiraRepository.ObtemContaFinanceira(idUser);
     }
 
-    public async Task IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira,string idConta)
+    public async Task IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira, ApplicationUser user)
     {
         var categoria = new Categoria(contaFinanceira.Categoria.Nome, contaFinanceira.Categoria.Descricao, contaFinanceira.Categoria.Tipo.ToString());
-        var conta = new ContaFinanceira(0, contaFinanceira.ValorLancamento, contaFinanceira.TipoLancamento, categoria);
-        conta.UsuarioId = idConta; 
-        await _contaFinanceiraRepository.IncluirContaFinanceiraAsync(conta);
+        
+        var conta = new ContaFinanceira(contaFinanceira.ValorLancamento, contaFinanceira.TipoLancamento, categoria);
+        var userAtualizado = await AtualizaSaldoUsuario(user, conta);
+        conta.UsuarioId = user.Id; 
+
+        await _contaFinanceiraRepository.IncluirContaFinanceiraAsync(conta, userAtualizado);
     }
 
-    //private async Task<bool> VerificaCategoria(int idCategoria)
-    //{
-
-    //}
+    private async Task<ApplicationUser> AtualizaSaldoUsuario(ApplicationUser user, ContaFinanceira contaFinanceira)
+    {
+        if (contaFinanceira.TipoLancamento == ContaFinanceira.TiposLancamento.Credito)
+        {
+            user.Saldo += contaFinanceira.ValorLancamento;
+            return user;
+        }
+        else
+        {
+            user.Saldo -= contaFinanceira.ValorLancamento;
+            return user;
+        }
+    }
 }
