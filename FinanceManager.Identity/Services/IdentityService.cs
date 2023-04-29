@@ -16,22 +16,16 @@ public class IdentityService : IIdentityService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JwtOptions _jwtOptions;
-    private readonly IEmailSender _emailSender;
     private readonly IMapper _mapper;
 
-    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, IEmailSender emailSender, IMapper mapper)
+    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, IMapper mapper)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
-        _emailSender = emailSender;
         _mapper = mapper;
     }
 
-    public async Task EnviaEmail(string link)
-    {
-        _emailSender.SendEmail("assunto", "marcosfelipehd4@gmail.com", "marcosfelipehd3@gmail.com", "Confirme seu email: {link}");
-    }
     public async Task<UserLoginResponse> LoginAsync(UserLoginRequest userLogin)
     {
         SignInResult signInResult = await _signInManager.PasswordSignInAsync(userLogin.Email, userLogin.Password, isPersistent: false, lockoutOnFailure: true);
@@ -63,18 +57,42 @@ public class IdentityService : IIdentityService
         return userLoginResponse;
     }
 
-    public async Task<bool> CadastrarUsuario(UserCadastroRequest userRegister)
+    public async Task<UserRegisterResponse> CadastrarUsuario(UserCadastroRequest userRegister)
     {
         var user = _mapper.Map<ApplicationUser>(userRegister);
         user.UserName = userRegister.Email;
 
         IdentityResult result = await _userManager.CreateAsync(user, userRegister.Senha);
-        if (result.Succeeded)
+
+        UserRegisterResponse userRegisterResponse = new UserRegisterResponse(result.Succeeded);
+
+        if (!result.Succeeded)
         {
-            return true;
+            foreach(var erroAtual in result.Errors)
+            {
+                switch (erroAtual.Code)
+                {
+                    case "PasswordRequiresNonAlphanumeric" :
+                        userRegisterResponse.AddError("A senha precisa conter pelo menos um caracter especial - ex( * | ! ).");
+                        break;   
+                    
+                    case "PasswordRequiresDigit":
+                        userRegisterResponse.AddError("A senha precisa conter pelo menos um número (0 - 9).");
+                        break; 
+                    
+                    case "PasswordRequiresUpper":
+                        userRegisterResponse.AddError("A senha precisa conter pelo menos um caracter em maiúsculo.");
+                        break;
+
+                    default:
+                        userRegisterResponse.AddError("Erro ao criar usuário.");
+                        break;
+                }
+
+            }
         }
 
-        return false;
+        return userRegisterResponse;
     }
 
     public async Task<string> ConfirmarEmail(string email)

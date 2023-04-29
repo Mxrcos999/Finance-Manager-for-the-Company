@@ -33,8 +33,6 @@ public class UsuarioProfile : Profile
 
         CreateMap<PessoaJuridicaCadastroRequest, PessoaJuridica>()
            .ForMember(desc => desc.RazaoSocial, opt => opt.MapFrom(src => src.RazaoSocial))
-            .ForMember(desc => desc.FaturamentoMensal, opt => opt.MapFrom(src => src.FaturamentoMensal))
-            .ForMember(desc => desc.FaturamentoAnual, opt => opt.MapFrom(src => src.FaturamentoAnual))
             .ForMember(desc => desc.Email, opt => opt.MapFrom(src => src.Email))
             .ForMember(desc => desc.Enderecos, opt => opt.MapFrom(src => src.Enderecos))
             .ForMember(desc => desc.Telefones, opt => opt.MapFrom(src => src.Telefones))

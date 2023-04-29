@@ -1,4 +1,5 @@
 ﻿using FinanceManager.Application.DTOs.DtosCadastro;
+using FinanceManager.Application.Interfaces;
 using FinanceManager.Identity.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
@@ -25,9 +26,11 @@ namespace FinanceManager.Api.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest);
 
             var result = await _identityService.CadastrarUsuario(model);
-            if (result)
+
+            if(result.Success)
                 return Ok(result);
-            return BadRequest();
+
+            return BadRequest(result);
         }
 
         [HttpPost]
@@ -41,7 +44,7 @@ namespace FinanceManager.Api.Controllers
             var result = await _identityService.ConfirmarEmail(email);
             var confirmationLink = Url.Action("ConfirmEmailUser", "user", new { userId = "72e3fd1e-0ea7-4592-a330-8a2e15a1f6c5", token = result }, Request.Scheme);
 
-            await _identityService.EnviaEmail(confirmationLink);
+            _emailSender.SendEmail("Confirme seu email", email, confirmationLink);
             return Ok();
         }
 
