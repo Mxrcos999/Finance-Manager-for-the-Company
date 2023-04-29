@@ -4,10 +4,7 @@ using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Domain.Entidades;
 using FinanceManager.Identity.Configurations;
 using FinanceManager.Identity.Interfaces;
-using FinanceManager.ServicosExternos.ViaCep;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -20,22 +17,20 @@ public class IdentityService : IIdentityService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JwtOptions _jwtOptions;
     private readonly IEmailSender _emailSender;
-    private readonly LinkGenerator _linkGenerator;
     private readonly IMapper _mapper;
 
-    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, LinkGenerator linkGenerator, IEmailSender emailSender, IMapper mapper)
+    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, IEmailSender emailSender, IMapper mapper)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
-        _linkGenerator = linkGenerator;
         _emailSender = emailSender;
         _mapper = mapper;
     }
 
     public async Task EnviaEmail(string link)
     {
-          _emailSender.SendEmail("assunto","marcosfelipehd4@gmail.com", "marcosfelipehd3@gmail.com", $"Confirme seu email: {link}");
+        _emailSender.SendEmail("assunto", "marcosfelipehd4@gmail.com", "marcosfelipehd3@gmail.com", "Confirme seu email: {link}");
     }
     public async Task<UserLoginResponse> LoginAsync(UserLoginRequest userLogin)
     {
@@ -70,7 +65,8 @@ public class IdentityService : IIdentityService
 
     public async Task<bool> CadastrarUsuario(UserCadastroRequest userRegister)
     {
-        var user = await ConverteObjetos(userRegister);
+        var user = _mapper.Map<ApplicationUser>(userRegister);
+        user.UserName = userRegister.Email;
 
         IdentityResult result = await _userManager.CreateAsync(user, userRegister.Senha);
         if (result.Succeeded)
@@ -79,97 +75,6 @@ public class IdentityService : IIdentityService
         }
 
         return false;
-    }
-
-    private async Task<PessoaFisica> CriaPessoaFisica(UserCadastroRequest userRegister)
-    {
-        var empregadores = new List<Empregador>();
-        var enderecos = new List<Endereco>();
-        var telefones = new List<Telefone>();
-        foreach (var enderecoAtual in userRegister.PessoaFisica.Enderecos)
-        {
-            enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.Uf, enderecoAtual.TipoLogradouro.ToString()));
-        }
-
-        foreach (var telefoneAtual in userRegister.PessoaFisica.Telefones)
-        {
-            telefones.Add(new Telefone(telefoneAtual.Ddd, telefoneAtual.Ddi, telefoneAtual.Numero, telefoneAtual.Principal, telefoneAtual.Ramal, telefoneAtual.TipoTelefone));
-        }
-        foreach (var empregadorAtual in userRegister.PessoaFisica.Empregador)
-        {
-            empregadores.Add(new Empregador
-                (empregadorAtual.RazaoSocial,
-                empregadorAtual.Cnpj,
-                empregadorAtual.EmpresaAtual,
-                empregadorAtual.ValorPago));
-        }
-        var pessoaFisica = new PessoaFisica
-              (userRegister.PessoaFisica.Cpf,
-              userRegister.PessoaFisica.Nome,
-              userRegister.PessoaFisica.DataNascimento,
-              empregadores,
-              enderecos,
-              telefones,
-              userRegister.PessoaFisica.Email);
-
-        return pessoaFisica;
-    }   
-    
-    private async Task<PessoaJuridica> CriaPessoaJuridica(UserCadastroRequest userRegister)
-    {
-        var enderecos = new List<Endereco>();
-        var telefones = new List<Telefone>();
-
-        foreach (var enderecoAtual in userRegister.PessoaJuridica.Enderecos)
-        {
-            enderecos.Add(new Endereco(enderecoAtual.Logradouro, enderecoAtual.Numero, enderecoAtual.Cep, enderecoAtual.Uf, enderecoAtual.TipoLogradouro.ToString()));
-        }
-
-        foreach (var telefoneAtual in userRegister.PessoaJuridica.Telefones)
-        {
-            telefones.Add(new Telefone(telefoneAtual.Ddd, telefoneAtual.Ddi, telefoneAtual.Numero, telefoneAtual.Principal, telefoneAtual.Ramal, telefoneAtual.TipoTelefone));
-        }
-        var pessoaJuridica = new PessoaJuridica
-                       (userRegister.PessoaJuridica.RazaoSocial,
-                       userRegister.PessoaJuridica.Cnpj,
-                       userRegister.PessoaJuridica.FaturamentoMensal,
-                       userRegister.PessoaJuridica.FaturamentoAnual,
-                       enderecos,
-                       telefones,
-                       userRegister.PessoaJuridica.Email);
-
-        return pessoaJuridica;
-    }
-
-    private async Task<ApplicationUser> ConverteObjetos(UserCadastroRequest userRegister)
-    {
-        var pessoaFisica = new PessoaFisica();
-        var pessoaJuridica = new PessoaJuridica();
-        var appUser = new ApplicationUser();
-        
-        if (userRegister.TipoUsuario == UserCadastroRequest.TipoUsuarioEnum.PessoaFisica)
-        {
-            pessoaFisica = await CriaPessoaFisica(userRegister);
-            appUser = new ApplicationUser()
-            {
-                Email = userRegister.Email,
-                PessoaFisica = pessoaFisica,
-                UserName = userRegister.Email
-            };
-        }
-        else
-        {
-            pessoaJuridica = await CriaPessoaJuridica(userRegister);
-
-            appUser = new ApplicationUser()
-            {
-                Email = userRegister.Email,
-                PessoaJuridica = pessoaJuridica,
-                UserName = userRegister.Email
-
-            };
-        }
-        return appUser;
     }
 
     public async Task<string> ConfirmarEmail(string email)
