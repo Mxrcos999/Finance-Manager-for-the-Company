@@ -2,6 +2,7 @@
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Application.Services;
 using FinanceManager.Domain.Entidades;
+using FinanceManager.Identity.Configurations;
 using FinanceManager.Identity.Interfaces;
 using FinanceManager.Identity.Services;
 using FinanceManager.Infrastructure;
@@ -21,6 +22,7 @@ namespace FinanceManager.Api.Ioc
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IContaFinanceiraService, ContaFinanceiraService>();
+
             services.Configure<DataProtectionTokenProviderOptions>(options =>
            options.TokenLifespan = TimeSpan.FromHours(2));
 
@@ -44,11 +46,7 @@ namespace FinanceManager.Api.Ioc
            .AddUserManager<UserManager<ApplicationUser>>()
            .AddSignInManager<SignInManager<ApplicationUser>>()
            .AddDefaultTokenProviders()
-           .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("EmailConfirmation");
-
-
-
-
+           .AddTokenProvider("Default", typeof(EmailConfirmationTokenProvider<ApplicationUser>));
 
             services.AddAuthentication(configuration);
             services.AddAuthorizationPolicies();

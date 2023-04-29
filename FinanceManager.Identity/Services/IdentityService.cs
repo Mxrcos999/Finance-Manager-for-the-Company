@@ -1,9 +1,11 @@
-﻿using FinanceManager.Application.DTOs.DtosCadastro;
+﻿using AutoMapper;
+using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Domain.Entidades;
 using FinanceManager.Identity.Configurations;
 using FinanceManager.Identity.Interfaces;
 using FinanceManager.ServicosExternos.ViaCep;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
@@ -19,19 +21,21 @@ public class IdentityService : IIdentityService
     private readonly JwtOptions _jwtOptions;
     private readonly IEmailSender _emailSender;
     private readonly LinkGenerator _linkGenerator;
+    private readonly IMapper _mapper;
 
-    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, LinkGenerator linkGenerator, IEmailSender emailSender)
+    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, LinkGenerator linkGenerator, IEmailSender emailSender, IMapper mapper)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
         _linkGenerator = linkGenerator;
         _emailSender = emailSender;
+        _mapper = mapper;
     }
 
-    public async Task EnviaEmail()
+    public async Task EnviaEmail(string link)
     {
-          _emailSender.SendEmail("assunto","marcosfelipehd4@gmail.com", "stefanybia193@gmail.com", "envio de email espero que de certo");
+          _emailSender.SendEmail("assunto","marcosfelipehd4@gmail.com", "marcosfelipehd3@gmail.com", $"Confirme seu email: {link}");
     }
     public async Task<UserLoginResponse> LoginAsync(UserLoginRequest userLogin)
     {
@@ -170,6 +174,8 @@ public class IdentityService : IIdentityService
 
     public async Task<string> ConfirmarEmail(string email)
     {
+        _userManager.RegisterTokenProvider("default", new EmailConfirmationTokenProvider<ApplicationUser>());
+
         var user = await _userManager.FindByEmailAsync(email);
         user.EmailConfirmed = false;
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);

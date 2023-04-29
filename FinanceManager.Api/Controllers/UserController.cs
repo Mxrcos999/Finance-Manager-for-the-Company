@@ -1,6 +1,7 @@
 ﻿using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Identity.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 
 namespace FinanceManager.Api.Controllers
 {
@@ -30,16 +31,17 @@ namespace FinanceManager.Api.Controllers
         }
 
         [HttpPost]
-        [Route("Users/confirmEmail")]
+        [Route("User/confirmEmail")]
         public async Task<IActionResult> ConfirmEmailUser([FromBody] string email)
         {
 
-            //if (!ModelState.IsValid)
-            //    return StatusCode(StatusCodes.Status400BadRequest);
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest);
 
-            //var result = await _identityService.ConfirmarEmail(email);
-            //var link = Url.Action("ConfirmEmail", "UserController", new { token = result }, Request.Scheme);
-            await _identityService.EnviaEmail();
+            var result = await _identityService.ConfirmarEmail(email);
+            var confirmationLink = Url.Action("ConfirmEmailUser", "user", new { userId = "72e3fd1e-0ea7-4592-a330-8a2e15a1f6c5", token = result }, Request.Scheme);
+
+            await _identityService.EnviaEmail(confirmationLink);
             return Ok();
         }
 

@@ -1,27 +1,39 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using FinanceManager.Domain.Entidades;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 namespace FinanceManager.Identity.Configurations
 {
-    public class EmailConfirmationTokenProvider<TUser> : DataProtectorTokenProvider<TUser>
-        where TUser : class
+    public class EmailConfirmationTokenProvider<TUser> : IUserTwoFactorTokenProvider<TUser>
+        where TUser : ApplicationUser
     {
 
-        public EmailConfirmationTokenProvider(
-            IDataProtectionProvider dataProtectionProvider,
-            IOptions<EmailConfirmationTokenProviderOptions> options)
-            : base(dataProtectionProvider, options)
+        public Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<TUser> manager, TUser user)
         {
+            if (manager != null && user != null)
+            {
+                return Task.FromResult(true);
+            }
+            else
+            {
+                return Task.FromResult(false);
+            }
+        }
+        private string GenerateToken(ApplicationUser user, string purpose)
+        {
+            string secretString = "coffeIsGood";
+            return secretString + user.Email + purpose + user.Id;
         }
 
-        public override async Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<TUser> manager, TUser user)
+        public Task<string> GenerateAsync(string purpose, UserManager<TUser> manager, TUser user)
         {
-            if (await base.CanGenerateTwoFactorTokenAsync(manager, user))
-            {
-                return await manager.IsEmailConfirmedAsync(user);
-            }
-            return false;
+            return Task.FromResult(GenerateToken(user, purpose));
+        }
+
+        public Task<bool> ValidateAsync(string purpose, string token, UserManager<TUser> manager, TUser user)
+        {
+            return Task.FromResult(token == GenerateToken(user, purpose));
         }
     }
 
@@ -29,7 +41,7 @@ namespace FinanceManager.Identity.Configurations
     {
         public EmailConfirmationTokenProviderOptions()
         {
-            Name = "EmailConfirmationDataProtectorTokenProvider";
+            Name = "Default";
             TokenLifespan = TimeSpan.FromDays(1);
         }
     }

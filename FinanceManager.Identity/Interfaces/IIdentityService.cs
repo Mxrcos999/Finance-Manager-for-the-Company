@@ -9,7 +9,7 @@ public interface IIdentityService
     Task<UserLoginResponse> LoginAsync(UserLoginRequest userLogin);
     Task<bool> CadastrarUsuario(UserCadastroRequest userRegister);
     Task<string> ConfirmarEmail(string email);
-    Task EnviaEmail();
+    Task EnviaEmail(string link);
 }
 
 
