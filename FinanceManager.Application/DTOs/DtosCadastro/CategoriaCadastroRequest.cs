@@ -3,7 +3,7 @@ using static FinanceManager.Domain.Entidades.Categoria;
 
 namespace FinanceManager.Application.DTOs.DtosCadastro;
 
-public class CategoriaCadastroRequest
+public sealed class CategoriaCadastroRequest
 {
     [Required(ErrorMessage = "O nome da categoria deve ser informado!")]
     public string Nome { get; set; }

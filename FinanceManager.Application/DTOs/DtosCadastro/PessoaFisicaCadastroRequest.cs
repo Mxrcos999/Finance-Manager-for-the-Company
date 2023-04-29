@@ -2,7 +2,7 @@
 
 namespace FinanceManager.Application.DTOs.DtosCadastro;
 
-public class PessoaFisicaCadastroRequest : PessoaCadastroRequest
+public sealed class PessoaFisicaCadastroRequest : PessoaCadastroRequest
 {
     [Required(ErrorMessage = "O campo CPF é obrigatório")]
     public string Cpf { get; set; }

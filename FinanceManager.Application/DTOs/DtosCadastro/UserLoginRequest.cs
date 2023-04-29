@@ -2,7 +2,7 @@
 
 namespace FinanceManager.Application.DTOs.DtosCadastro;
 
-public class UserLoginRequest
+public sealed class UserLoginRequest
 {
     [Required]
     public string Email { get; set; }

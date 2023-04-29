@@ -1,6 +1,4 @@
-﻿using FinanceManager.Domain.Entidades;
-
-namespace FinanceManager.Application.DTOs.DtosCadastro;
+﻿namespace FinanceManager.Application.DTOs.DtosCadastro;
 
 public abstract class PessoaCadastroRequest
 {
