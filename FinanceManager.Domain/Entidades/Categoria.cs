@@ -9,7 +9,7 @@ public class Categoria : EntidadeBase
     public string Descricao { get; private set; }
     public string Tipo { get; private set; }
     public int ContaFinanceiraId { get;  set; }
-    public ContaFinanceira ContaFinanceira { get;  set; }
+    public ICollection<ContaFinanceira> ContaFinanceira { get;  set; }
     public Categoria() {}
 
     public Categoria(string nome, string descricao, string tipo)

@@ -8,10 +8,12 @@ namespace FinanceManager.Application.Services;
 public class ContaFinanceiraService : IContaFinanceiraService
 {
     private readonly IContaFinanceiraRepository _contaFinanceiraRepository;
+    private readonly IContaFinanceiraFactory _contaFinanceiraFactory;
 
-    public ContaFinanceiraService(IContaFinanceiraRepository contaFinanceiraRepository)
+    public ContaFinanceiraService(IContaFinanceiraRepository contaFinanceiraRepository, IContaFinanceiraFactory contaFinanceiraFactory)
     {
         _contaFinanceiraRepository = contaFinanceiraRepository;
+        _contaFinanceiraFactory = contaFinanceiraFactory;
     }
     public async Task<IEnumerable<ContaFinanceiraResponse>> ObterContasFinanceiras(string idUser)
     {
@@ -20,13 +22,12 @@ public class ContaFinanceiraService : IContaFinanceiraService
 
     public async Task IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira, ApplicationUser user)
     {
-        var categoria = new Categoria(contaFinanceira.Categoria.Nome, contaFinanceira.Categoria.Descricao, contaFinanceira.Categoria.Tipo.ToString());
+        var categoriaObtida = await _contaFinanceiraRepository.ObterCategoriaByNomeAsync(user.Id, contaFinanceira.Categoria.Id);
 
-        var conta = new ContaFinanceira(contaFinanceira.ValorLancamento, contaFinanceira.TipoLancamento, categoria);
-        var userAtualizado = await AtualizaSaldoUsuario(user, conta);
-        conta.UsuarioId = user.Id;
-
-        await _contaFinanceiraRepository.IncluirContaFinanceiraAsync(conta, userAtualizado);
+        var contaFinanceriaInserir = _contaFinanceiraFactory.Create(contaFinanceira, categoriaObtida);
+        contaFinanceriaInserir.UsuarioId = user.Id;
+        var userAtualizado = await AtualizaSaldoUsuario(user, contaFinanceriaInserir);
+        await _contaFinanceiraRepository.IncluirContaFinanceiraAsync(contaFinanceriaInserir, userAtualizado);
     }
 
     private async Task<ApplicationUser> AtualizaSaldoUsuario(ApplicationUser user, ContaFinanceira contaFinanceira)
@@ -43,3 +44,6 @@ public class ContaFinanceiraService : IContaFinanceiraService
         }
     }
 }
+
+
+

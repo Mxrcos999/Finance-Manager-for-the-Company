@@ -6,6 +6,7 @@ using FinanceManager.Identity.Configurations;
 using FinanceManager.Identity.Interfaces;
 using FinanceManager.Identity.Services;
 using FinanceManager.Infrastructure;
+using FinanceManager.Infrastructure.Factory;
 using FinanceManager.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace FinanceManager.Api.Ioc
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IContaFinanceiraService, ContaFinanceiraService>();
+            services.AddScoped<IContaFinanceiraFactory, ContaFinanceiraFactory>();
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
            options.TokenLifespan = TimeSpan.FromHours(2));

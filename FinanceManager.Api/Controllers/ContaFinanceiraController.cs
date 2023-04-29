@@ -22,7 +22,7 @@ public class ContaFinanceiraController : Controller
     }
 
     [HttpGet]
-    [Route("api/conta-financeira")]
+    [Route("api/historico")]
     public async Task<IEnumerable<ContaFinanceiraResponse>> GetContaFinanceirasASync()
     {
         var usuarioLogado = await _userManager.GetUserAsync(User);

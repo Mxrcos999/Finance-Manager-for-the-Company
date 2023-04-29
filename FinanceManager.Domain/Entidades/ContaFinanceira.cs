@@ -11,12 +11,12 @@ public class ContaFinanceira : EntidadeBase
     public DateTime Datalancamento { get; private set; }
     public string UsuarioId { get; set; }
     public ApplicationUser Usuario { get; set; }  
-    public int CategoriaId { get; set; }
+    public int? CategoriaId { get; set; }
 
-    public Categoria Categorias { get; set; }
+    public Categoria? Categorias { get; set; }
 
     public ContaFinanceira() {}
-    public ContaFinanceira(decimal valorLancamento, TiposLancamento tipoLancamento, Categoria categoria)
+    public ContaFinanceira(decimal valorLancamento, TiposLancamento tipoLancamento, Categoria? categoria = null)
     {
         ValorLancamento = valorLancamento;
         TipoLancamento = tipoLancamento;

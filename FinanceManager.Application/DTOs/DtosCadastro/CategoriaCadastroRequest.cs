@@ -5,6 +5,7 @@ namespace FinanceManager.Application.DTOs.DtosCadastro;
 
 public sealed class CategoriaCadastroRequest
 {
+    public int? Id { get; set; }
     [Required(ErrorMessage = "O nome da categoria deve ser informado!")]
     public string Nome { get; set; }
 

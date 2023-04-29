@@ -1,9 +1,6 @@
-﻿using FinanceManager.Application.DTOs.DtosCadastro;
-using FinanceManager.Application.DTOs.DtosResponse;
+﻿using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
-using FinanceManager.Domain;
 using FinanceManager.Domain.Entidades;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinanceManager.Infrastructure.Repository;
@@ -13,6 +10,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
     private readonly FinanceManagerContext _context;
     private readonly DbSet<ContaFinanceira> _contaFinanceiras;
     private readonly DbSet<ApplicationUser> _user;
+    private readonly DbSet<Categoria> _categorias;
     private readonly IUnitOfWork _unitOfWork;
 
 
@@ -21,6 +19,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         _context = context;
         _contaFinanceiras = context.Set<ContaFinanceira>();
         _user = context.Set<ApplicationUser>();
+        _categorias = context.Set<Categoria>();
         _unitOfWork = unitOfWork;
     }
 
@@ -41,9 +40,20 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
                              Descricao = Contas.Categorias.Descricao,
                              TipoCategoria = Contas.Categorias.Tipo.ToString()
                          }
-                         
+
                      };
         return contas.AsEnumerable();
+    }   
+    
+    public async Task<Categoria> ObterCategoriaByNomeAsync(string idUser, int? idCategoria)
+    {
+        var categoria = await _categorias
+            .Where(wh => wh.Id == idCategoria).SingleOrDefaultAsync();
+       
+        if(categoria is null) 
+            return null;
+
+        return categoria;
     }
 
     public async Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira, ApplicationUser user)
