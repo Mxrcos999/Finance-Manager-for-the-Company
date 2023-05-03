@@ -27,6 +27,7 @@ namespace FinanceManager.Api.Ioc
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
            options.TokenLifespan = TimeSpan.FromHours(2));
+            services.Configure<EmailSenderOptions>(configuration.GetSection("EmailSenderOptions"));
 
 
             services.Configure<DataProtectionTokenProviderOptions>("EmailConfirmation", options =>

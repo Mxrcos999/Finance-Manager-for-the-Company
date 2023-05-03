@@ -60,6 +60,7 @@ public class IdentityService : IIdentityService
     public async Task<UserRegisterResponse> CadastrarUsuario(UserCadastroRequest userRegister)
     {
         var user = _mapper.Map<ApplicationUser>(userRegister);
+
         user.UserName = userRegister.Email;
 
         IdentityResult result = await _userManager.CreateAsync(user, userRegister.Senha);
@@ -82,6 +83,10 @@ public class IdentityService : IIdentityService
                     
                     case "PasswordRequiresUpper":
                         userRegisterResponse.AddError("A senha precisa conter pelo menos um caracter em maiúsculo.");
+                        break;
+
+                    case "DuplicateUserName":
+                        userRegisterResponse.AddError("O email informado já foi cadastrado!");
                         break;
 
                     default:
