@@ -2,12 +2,10 @@
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Identity.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Common;
 
 namespace FinanceManager.Api.Controllers
 {
     [ApiController]
-    [Route("api")]
     public class UserController : Controller
     {
         private readonly IIdentityService _identityService;
@@ -19,7 +17,7 @@ namespace FinanceManager.Api.Controllers
         }
 
         [HttpPost]
-        [Route("Users")]
+        [Route("api/users/register")]
         public async Task<IActionResult> RegisterUser(UserCadastroRequest model)
         {
             if (!ModelState.IsValid)
@@ -27,14 +25,14 @@ namespace FinanceManager.Api.Controllers
 
             var result = await _identityService.CadastrarUsuario(model);
 
-            if(result.Success)
+            if (result.Success)
                 return Ok(result);
 
             return BadRequest(result);
         }
 
         [HttpPost]
-        [Route("User/confirmEmail")]
+        [Route("api/users/confirmEmail")]
         public async Task<IActionResult> ConfirmEmailUser([FromBody] string email)
         {
 
@@ -49,7 +47,7 @@ namespace FinanceManager.Api.Controllers
         }
 
         [HttpPost]
-        [Route("Users/login")]
+        [Route("api/users/login")]
         public async Task<IActionResult> Login(UserLoginRequest model)
         {
             if (!ModelState.IsValid)
