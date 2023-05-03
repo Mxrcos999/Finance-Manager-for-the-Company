@@ -8,24 +8,18 @@ public class UsuarioProfile : Profile
 {
     public UsuarioProfile()
     {
-        CreateMap<UserCadastroRequest, ApplicationUser>()
-        .ForMember(dest => dest.PessoaFisica, opt =>
-        {
-            opt.PreCondition(src => src.TipoUsuario.ToString() == "PessoaFisica");
-            opt.MapFrom(src => src.PessoaFisica);
-        })
-        .ForMember(dest => dest.PessoaJuridica, opt =>
-        {
-            opt.PreCondition(src => src.TipoUsuario.ToString() == "PessoaJuridica");
-            opt.MapFrom(src => src.PessoaJuridica);
-        });
+        CreateMap<UserPessoaFisicaCadastroRequest, ApplicationUser>()
+            .ForMember(desc => desc.Email, opt => opt.MapFrom(src => src.PessoaFisica.Email));  
+        
+        CreateMap<UserPessoaJuridicaCadastroRequest, ApplicationUser>()
+            .ForMember(desc => desc.Email, opt => opt.MapFrom(src => src.PessoaJuridica.Email));
 
         CreateMap<EnderecoCadastroRequest, Endereco>();
         CreateMap<TelefoneCadastroRequest, Telefone>();
 
         CreateMap<PessoaFisicaCadastroRequest, PessoaFisica>()
             .ForMember(desc => desc.Cpf, opt => opt.MapFrom(src => src.Cpf))
-            .ForMember(desc => desc.Email, opt => opt.MapFrom(src => src.Email))
+            .ForMember(desc => desc.Email, opt => opt.MapFrom(src => src.Emails))
             .ForMember(desc => desc.Enderecos, opt => opt.MapFrom(src => src.Enderecos))
             .ForMember(desc => desc.Telefones, opt => opt.MapFrom(src => src.Telefones))
             .ForMember(desc => desc.Empregador, opt => opt.MapFrom(src => src.Empregador))
@@ -33,7 +27,7 @@ public class UsuarioProfile : Profile
 
         CreateMap<PessoaJuridicaCadastroRequest, PessoaJuridica>()
            .ForMember(desc => desc.RazaoSocial, opt => opt.MapFrom(src => src.RazaoSocial))
-            .ForMember(desc => desc.Email, opt => opt.MapFrom(src => src.Email))
+            .ForMember(desc => desc.Email, opt => opt.MapFrom(src => src.Emails))
             .ForMember(desc => desc.Enderecos, opt => opt.MapFrom(src => src.Enderecos))
             .ForMember(desc => desc.Telefones, opt => opt.MapFrom(src => src.Telefones))
             .ForMember(desc => desc.Cnpj, opt => opt.MapFrom(src => src.Cnpj));

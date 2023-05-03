@@ -28,9 +28,12 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         var contas = from Contas in _contaFinanceiras
                        .AsNoTracking()
                        .Include(i => i.Categorias)
+                       .Include(i => i.Usuario)
                        .Where(wh => wh.UsuarioId == idUser)
+                       .OrderBy(ob => ob.Datalancamento)
                      select new ContaFinanceiraResponse()
                      {
+                         SaldoAtual = Contas.Usuario.Saldo,
                          Datalancamento = Contas.Datalancamento,
                          TipoLancamento = Contas.TipoLancamento.ToString(),
                          ValorLancamento = Contas.ValorLancamento,

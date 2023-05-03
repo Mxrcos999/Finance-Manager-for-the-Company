@@ -17,13 +17,28 @@ namespace FinanceManager.Api.Controllers
         }
 
         [HttpPost]
-        [Route("api/users/register")]
-        public async Task<IActionResult> RegisterUser(UserCadastroRequest model)
+        [Route("api/users/register/pessoa-fisica")]
+        public async Task<IActionResult> RegisterUser(UserPessoaFisicaCadastroRequest model)
         {
             if (!ModelState.IsValid)
                 return StatusCode(StatusCodes.Status400BadRequest);
 
-            var result = await _identityService.CadastrarUsuario(model);
+            var result = await _identityService.CadastrarUsuarioPessoaFisica(model);
+
+            if (result.Success)
+                return Ok(result);
+
+            return BadRequest(result);
+        } 
+        
+        [HttpPost]
+        [Route("api/users/register/pessoa-juridica")]
+        public async Task<IActionResult> RegisterUserPessoaJuridica(UserPessoaJuridicaCadastroRequest model)
+        {
+            if (!ModelState.IsValid)
+                return StatusCode(StatusCodes.Status400BadRequest);
+
+            var result = await _identityService.CadastrarUsuarioPessoaJuridica(model);
 
             if (result.Success)
                 return Ok(result);

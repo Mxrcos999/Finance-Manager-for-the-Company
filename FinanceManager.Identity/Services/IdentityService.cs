@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using static FinanceManager.Application.DTOs.DtosCadastro.UserPessoaFisicaCadastroRequest;
 
 namespace FinanceManager.Identity.Services;
 
@@ -57,13 +58,55 @@ public class IdentityService : IIdentityService
         return userLoginResponse;
     }
 
-    public async Task<UserRegisterResponse> CadastrarUsuario(UserCadastroRequest userRegister)
+    public async Task<UserRegisterResponse> CadastrarUsuarioPessoaJuridica(UserPessoaJuridicaCadastroRequest userRegister)
     {
         var user = _mapper.Map<ApplicationUser>(userRegister);
 
-        user.UserName = userRegister.Email;
+        user.UserName = userRegister.PessoaJuridica.Email;
+        user.TipoUsuario = (ApplicationUser.TipoUsuarioEnum)TipoUsuarioEnum.PessoaJuridica;
+        IdentityResult result = await _userManager.CreateAsync(user, userRegister.PessoaJuridica.Senha);
 
-        IdentityResult result = await _userManager.CreateAsync(user, userRegister.Senha);
+        UserRegisterResponse userRegisterResponse = new UserRegisterResponse(result.Succeeded);
+
+        if (!result.Succeeded)
+        {
+            foreach(var erroAtual in result.Errors)
+            {
+                switch (erroAtual.Code)
+                {
+                    case "PasswordRequiresNonAlphanumeric" :
+                        userRegisterResponse.AddError("A senha precisa conter pelo menos um caracter especial - ex( * | ! ).");
+                        break;   
+                    
+                    case "PasswordRequiresDigit":
+                        userRegisterResponse.AddError("A senha precisa conter pelo menos um número (0 - 9).");
+                        break; 
+                    
+                    case "PasswordRequiresUpper":
+                        userRegisterResponse.AddError("A senha precisa conter pelo menos um caracter em maiúsculo.");
+                        break;
+
+                    case "DuplicateUserName":
+                        userRegisterResponse.AddError("O email informado já foi cadastrado!");
+                        break;
+
+                    default:
+                        userRegisterResponse.AddError("Erro ao criar usuário.");
+                        break;
+                }
+
+            }
+        }
+
+        return userRegisterResponse;
+    }
+    public async Task<UserRegisterResponse> CadastrarUsuarioPessoaFisica(UserPessoaFisicaCadastroRequest userRegister)
+    {
+        var user = _mapper.Map<ApplicationUser>(userRegister);
+
+        user.UserName = userRegister.PessoaFisica.Email;
+
+        IdentityResult result = await _userManager.CreateAsync(user, userRegister.PessoaFisica.Senha);
 
         UserRegisterResponse userRegisterResponse = new UserRegisterResponse(result.Succeeded);
 
