@@ -8,7 +8,7 @@ public interface IIdentityService
     Task<UserLoginResponse> LoginAsync(UserLoginRequest userLogin);
     Task<UserRegisterResponse> CadastrarUsuarioPessoaFisica(UserPessoaFisicaCadastroRequest userRegister);
     Task<UserRegisterResponse> CadastrarUsuarioPessoaJuridica(UserPessoaJuridicaCadastroRequest userRegister);
-    Task<string> ConfirmarEmail(string email);
+    Task<string> ConfirmarEmail(string token, string idUser);
 }
 
 

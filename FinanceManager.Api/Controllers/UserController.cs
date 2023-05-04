@@ -2,6 +2,7 @@
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Identity.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace FinanceManager.Api.Controllers
 {
@@ -24,7 +25,6 @@ namespace FinanceManager.Api.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest);
 
             var result = await _identityService.CadastrarUsuarioPessoaFisica(model);
-
             if (result.Success)
                 return Ok(result);
 
@@ -48,17 +48,15 @@ namespace FinanceManager.Api.Controllers
 
         [HttpPost]
         [Route("api/users/confirmEmail")]
-        public async Task<IActionResult> ConfirmEmailUser([FromBody] string email)
+        public async Task<IActionResult> ConfirmEmailUser(string token, string idUser)
         {
 
             if (!ModelState.IsValid)
                 return StatusCode(StatusCodes.Status400BadRequest);
 
-            var result = await _identityService.ConfirmarEmail(email);
-            var confirmationLink = Url.Action("ConfirmEmailUser", "user", new { userId = "72e3fd1e-0ea7-4592-a330-8a2e15a1f6c5", token = result }, Request.Scheme);
-
-            _emailSender.SendEmail("Confirme seu email", email, confirmationLink);
-            return Ok();
+            var result = await _identityService.ConfirmarEmail(token, idUser);
+           
+            return Ok(result);
         }
 
         [HttpPost]

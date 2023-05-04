@@ -27,6 +27,11 @@ public static class AuthenticationSetup
             options.RefreshTokenExpiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.RefreshTokenExpiration)] ?? "0");
         });
 
+        //services.Configure<UserManager<ApplicationUser>>(options =>
+        //{
+        //    options.RegisterTokenProvider("default", new EmailConfirmationTokenProvider<ApplicationUser>());
+        //});
+
         services.Configure<IdentityOptions>(options =>
         {
             options.Password.RequireDigit = true;
@@ -34,7 +39,7 @@ public static class AuthenticationSetup
             options.Password.RequireNonAlphanumeric = true;
             options.Password.RequireUppercase = true;
             options.Password.RequiredLength = 6;
-            options.SignIn.RequireConfirmedEmail = false;
+            options.SignIn.RequireConfirmedEmail = true;
             options.Tokens.EmailConfirmationTokenProvider = "default";
         });
 

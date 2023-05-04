@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
+using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain.Entidades;
 using FinanceManager.Identity.Configurations;
 using FinanceManager.Identity.Interfaces;
@@ -17,14 +18,16 @@ public class IdentityService : IIdentityService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JwtOptions _jwtOptions;
+    private readonly IEmailSender _emailSender;
     private readonly IMapper _mapper;
 
-    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, IMapper mapper)
+    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, IMapper mapper, IEmailSender emailSender)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
         _mapper = mapper;
+        _emailSender = emailSender;
     }
 
     public async Task<UserLoginResponse> LoginAsync(UserLoginRequest userLogin)
@@ -57,7 +60,6 @@ public class IdentityService : IIdentityService
 
         return userLoginResponse;
     }
-
     public async Task<UserRegisterResponse> CadastrarUsuarioPessoaJuridica(UserPessoaJuridicaCadastroRequest userRegister)
     {
         var user = _mapper.Map<ApplicationUser>(userRegister);
@@ -97,6 +99,7 @@ public class IdentityService : IIdentityService
 
             }
         }
+  
 
         return userRegisterResponse;
     }
@@ -139,19 +142,28 @@ public class IdentityService : IIdentityService
 
             }
         }
+        else
+        {
+            var token = await GerarTokenEmail(user.Email);
+
+            _emailSender.SendEmail("Confirme seu email", user.Email, $"Olá {user.PessoaFisica.Nome}<br> Bem vindo ao Cronus! Por favor confirme seu email no link abaixo <br> link: {token}");
+            userRegisterResponse.AddError("Um link de confirmação foi enviado para seu email!");
+        }
 
         return userRegisterResponse;
     }
 
-    public async Task<string> ConfirmarEmail(string email)
+    public async Task<string> ConfirmarEmail(string token, string idUser)
     {
-        _userManager.RegisterTokenProvider("default", new EmailConfirmationTokenProvider<ApplicationUser>());
+        var user = await _userManager.FindByIdAsync(idUser);
+        var result = await _userManager.ConfirmEmailAsync(user, token);
+        if(result.Succeeded) 
+        {
+            var mensagem = "Email confirmado";
+            return mensagem;
 
-        var user = await _userManager.FindByEmailAsync(email);
-        user.EmailConfirmed = false;
-        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-        return token;
+        }
+        return "Erro ao confirmar";
     }
 
     private async Task<UserLoginResponse> GerarCredenciais(string email)
@@ -178,6 +190,17 @@ public class IdentityService : IIdentityService
     {
         JwtSecurityToken token = new JwtSecurityToken(_jwtOptions.Issuer, _jwtOptions.Audience, claims, DateTime.Now, dataExpiracao, _jwtOptions.SigningCredentials);
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private async Task<string> GerarTokenEmail(string email)
+    {
+        _userManager.RegisterTokenProvider("default", new EmailConfirmationTokenProvider<ApplicationUser>());
+
+        var user = await _userManager.FindByEmailAsync(email);
+
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var link = $"http://127.0.0.1:5500/Index.html?{token}";
+        return link;
     }
 
     private async Task<IList<Claim>> ObterClaims(ApplicationUser user, bool adicionarClaimsUsuario)

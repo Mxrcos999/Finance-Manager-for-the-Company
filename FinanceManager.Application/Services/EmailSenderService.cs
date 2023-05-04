@@ -15,9 +15,9 @@ public class EmailSender : IEmailSender
     }
     private SmtpClient ObterClient()
     {
-        var client = new SmtpClient(_options.Host, _options.Port)
+        var client = new SmtpClient("smtp.titan.email", 587)
         {
-            Credentials = new System.Net.NetworkCredential(_options.Username, _options.Password),
+            Credentials = new System.Net.NetworkCredential("rodrigo@formulasecretaseducao.com.br", "Quita123*"),
             EnableSsl = false
         };
         return client;
