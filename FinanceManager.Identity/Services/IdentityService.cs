@@ -99,7 +99,13 @@ public class IdentityService : IIdentityService
 
             }
         }
-  
+        {
+            var token = await GerarTokenEmail(user.Email);
+
+            _emailSender.SendEmail(user.PessoaJuridica.RazaoSocial, user.Email, token);
+            userRegisterResponse.AddError("Um link de confirmação foi enviado para seu email!");
+        }
+
 
         return userRegisterResponse;
     }
@@ -146,7 +152,7 @@ public class IdentityService : IIdentityService
         {
             var token = await GerarTokenEmail(user.Email);
 
-            _emailSender.SendEmail("Confirme seu email", user.Email, $"Olá {user.PessoaFisica.Nome}<br> Bem vindo ao Cronus! Por favor confirme seu email no link abaixo <br> link: {token}");
+            _emailSender.SendEmail(user.PessoaFisica.Nome, user.Email, token);
             userRegisterResponse.AddError("Um link de confirmação foi enviado para seu email!");
         }
 

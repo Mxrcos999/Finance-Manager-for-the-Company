@@ -24,11 +24,11 @@ public class EmailSender : IEmailSender
 
     }
 
-    public void SendEmail(string assuntoEmail, string destinatarios, string corpoEmail)
+    public void SendEmail(string nome, string destinatarios, string token)
     {
         if ( string.IsNullOrEmpty(destinatarios) ||      
-        string.IsNullOrEmpty(assuntoEmail) ||
-        string.IsNullOrEmpty(corpoEmail))
+        string.IsNullOrEmpty(nome) ||
+        string.IsNullOrEmpty(token))
         {
             throw new ArgumentException("Os parâmetros remetente, destinatário, assunto e corpoo do email são obrigatórios.");
         }
@@ -39,9 +39,9 @@ public class EmailSender : IEmailSender
             {
                 mm.To.Add(new MailAddress(emailAtual.TrimStart().TrimEnd()));
             }
-            mm.Subject = $"{assuntoEmail}";
+            mm.Subject = $"Bem vindo a Cronus finance!";
             mm.IsBodyHtml = true;
-            mm.Body = $"<p> {corpoEmail} </p>";
+            mm.Body = $"<p> Olá, {nome}<br> Bem vindo a Cronus Finance! Por favor confirme seu email no link abaixo <br> link: {token} </p>";
             mm.SubjectEncoding = Encoding.GetEncoding("UTF-8");
             mm.BodyEncoding = Encoding.GetEncoding("UTF-8");
             using (var client = ObterClient())

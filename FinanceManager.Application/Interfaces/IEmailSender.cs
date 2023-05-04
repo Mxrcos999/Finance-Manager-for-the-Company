@@ -2,5 +2,5 @@
 
 public interface IEmailSender
 {
-    void SendEmail(string assuntoEmail, string destinatarios, string corpoEmail);
+    void SendEmail(string nome, string destinatarios, string token);
 }
