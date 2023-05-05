@@ -161,6 +161,8 @@ public class IdentityService : IIdentityService
 
     public async Task<string> ConfirmarEmail(string token, string idUser)
     {
+        _userManager.RegisterTokenProvider("default", new EmailConfirmationTokenProvider<ApplicationUser>());
+
         var user = await _userManager.FindByIdAsync(idUser);
         var result = await _userManager.ConfirmEmailAsync(user, token);
         if(result.Succeeded) 

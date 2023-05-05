@@ -4,7 +4,6 @@ namespace FinanceManager.Application.DTOs.DtosCadastro;
 
 public class PessoaCadastroRequest 
 {
-    public List<EnderecoCadastroRequest> Enderecos { get; set; }
     public List<TelefoneCadastroRequest> Telefones { get; set; }
     public string[] Emails { get; set; }
     [Required(ErrorMessage = "O campo email é obrigatório.")]

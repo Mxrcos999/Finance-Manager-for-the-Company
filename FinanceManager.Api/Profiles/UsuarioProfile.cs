@@ -20,7 +20,6 @@ public class UsuarioProfile : Profile
         CreateMap<PessoaFisicaCadastroRequest, PessoaFisica>()
             .ForMember(desc => desc.Cpf, opt => opt.MapFrom(src => src.Cpf))
             .ForMember(desc => desc.Email, opt => opt.MapFrom(src => src.Emails))
-            .ForMember(desc => desc.Enderecos, opt => opt.MapFrom(src => src.Enderecos))
             .ForMember(desc => desc.Telefones, opt => opt.MapFrom(src => src.Telefones))
             .ForMember(desc => desc.Empregador, opt => opt.MapFrom(src => src.Empregador))
             .ForMember(desc => desc.Nome, opt => opt.MapFrom(src => src.Nome));
@@ -28,7 +27,6 @@ public class UsuarioProfile : Profile
         CreateMap<PessoaJuridicaCadastroRequest, PessoaJuridica>()
            .ForMember(desc => desc.RazaoSocial, opt => opt.MapFrom(src => src.RazaoSocial))
             .ForMember(desc => desc.Email, opt => opt.MapFrom(src => src.Emails))
-            .ForMember(desc => desc.Enderecos, opt => opt.MapFrom(src => src.Enderecos))
             .ForMember(desc => desc.Telefones, opt => opt.MapFrom(src => src.Telefones))
             .ForMember(desc => desc.Cnpj, opt => opt.MapFrom(src => src.Cnpj));
 
