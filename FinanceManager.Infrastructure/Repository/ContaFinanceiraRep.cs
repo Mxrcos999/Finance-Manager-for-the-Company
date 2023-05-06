@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace FinanceManager.Infrastructure.Repository;
 
-public class ContaFinanceiraRepository : IContaFinanceiraRepository
+public class ContaFinanceiraRep : IContaFinanceiraRepository
 {
     private readonly FinanceManagerContext _context;
     private readonly DbSet<ContaFinanceira> _contaFinanceiras;
@@ -17,7 +17,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
     private readonly string IdUsuarioLogado;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public ContaFinanceiraRepository(FinanceManagerContext context, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+    public ContaFinanceiraRep(FinanceManagerContext context, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _contaFinanceiras = context.Set<ContaFinanceira>();
@@ -52,17 +52,6 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
                      };
         return contas.AsEnumerable();
     }   
-    
-    public async Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria)
-    {
-        var categoria = await _categorias
-            .Where(wh => wh.Id == idCategoria && wh.UsuarioId == IdUsuarioLogado).SingleOrDefaultAsync();
-       
-        if(categoria is null) 
-            return null;
-
-        return categoria;
-    }
 
     public async Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira)
     {

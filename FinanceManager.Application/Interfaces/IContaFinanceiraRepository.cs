@@ -7,5 +7,4 @@ public interface IContaFinanceiraRepository
 {
     Task<IEnumerable<ContaFinanceiraResponse>> ObtemContaFinanceira();
     Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira);
-    Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria);
 }

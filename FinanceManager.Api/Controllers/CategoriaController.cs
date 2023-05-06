@@ -3,6 +3,7 @@ using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain.Entidades;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,17 +24,22 @@ public class CategoriaController
     }
 
     [HttpGet]
-
     public async Task<IEnumerable<CategoriaResponse>> GetCategoriaAsync()
     {
-        return await _categoriaService.ObterCategoriaAsync();
+        return await _categoriaService.ObterAsync();
     }
 
     [HttpPost]
-
-    public async Task PostEntradaASync([FromBody] CategoriaCadastroRequest categoria)
+    public async Task PostEntradaAsync([FromBody] CategoriaCadastroRequest categoria)
     {
-        await _categoriaService.IncluirCategoriaAsync(categoria);
+        await _categoriaService.IncluirAsync(categoria);
+    }
+
+    [HttpGet]
+    public async Task<Categoria> GetCategoriaByIdAsync(int id)
+    {
+        return await _categoriaService.ObterCategoriaByIdAsync(id);
+
     }
        
 }

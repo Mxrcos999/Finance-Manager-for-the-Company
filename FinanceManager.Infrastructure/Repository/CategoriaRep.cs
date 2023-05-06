@@ -13,6 +13,7 @@ public class CategoriaRep : ICategoriaRep
     private readonly DbSet<ApplicationUser> _user;
     private readonly DbSet<Categoria> _categorias;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly string IdUsuarioLogado;
 
     public CategoriaRep(FinanceManagerContext context, IUnitOfWork unitOfWork)
     {
@@ -20,45 +21,52 @@ public class CategoriaRep : ICategoriaRep
         _user = context.Set<ApplicationUser>();
         _categorias = context.Set<Categoria>();
         _unitOfWork = unitOfWork;
+        IdUsuarioLogado = _context._httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
     }
 
-    public async Task<IEnumerable<CategoriaResponse>> ObtemCategoria(string idUser)
+    public async Task<IEnumerable<CategoriaResponse>> ObterAsync()
     {
         var categoriaObtida = from categoria in _categorias
                       .AsNoTracking()
-                      .Include(i => i.)
                       .Where(wh => wh.UsuarioId == IdUsuarioLogado)
-                      .OrderBy(ob => ob.Datalancamento)
-                     select new ContaFinanceiraResponse()
-                     {
-                         SaldoAtual = Contas.Usuario.Saldo,
-                         Datalancamento = Contas.Datalancamento,
-                         TipoLancamento = Contas.TipoLancamento.ToString(),
-                         ValorLancamento = Contas.ValorLancamento,
-                         Categoria = new CategoriaResponse()
-                         {
-                             Nome = Contas.Categorias.Nome,
-                             Descricao = Contas.Categorias.Descricao,
-                             TipoCategoria = Contas.Categorias.Tipo.ToString()
-                         }
+                      .OrderBy(ob => ob.DataHoraCadastro)
+                              select new CategoriaResponse()
+                              {
 
-                     };
-        return contas.AsEnumerable();
+                                  Nome = categoria.Nome,
+                                  Descricao = categoria.Descricao,
+                                  TipoCategoria = categoria.Tipo.ToString()
+
+                              };
+        return categoriaObtida.AsEnumerable();
     }
 
+    public async Task IncluirAsync(Categoria categoria)
     {
-        Task ICategoriaRep.IncluirCategoriaAsync(Categoria categoria, ApplicationUser user)
-    {
-        throw new NotImplementedException();
+        try
+        {
+            await _categorias.AddAsync(categoria);
+
+            await _unitOfWork.CommitAsync();
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
+     
     }
 
-    Task<IEnumerable<CategoriaResponse>> ICategoriaRep.ObtemCategoria(string idUser)
-    {
-        throw new NotImplementedException();
-    }
 
-    Task<Categoria> ICategoriaRep.ObterCategoriaByNomeAsync(int? idCategoria)
+    public async Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria)
     {
-        throw new NotImplementedException();
+        var categoria = await _categorias
+            .Where(wh => wh.Id == idCategoria && wh.UsuarioId == IdUsuarioLogado).SingleOrDefaultAsync();
+
+        if (categoria is null)
+            return null;
+
+        return categoria;
     }
 }

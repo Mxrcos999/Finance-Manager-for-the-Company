@@ -1,11 +1,10 @@
-﻿
-using FinanceManager.Application.DTOs.DtosCadastro;
+﻿using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain.Entidades;
+using FinanceManager.Domain.Factory;
 
 namespace FinanceManager.Application.Services;
-
 
 public class CategoriaService : ICategoriaService
 {
@@ -16,21 +15,27 @@ public class CategoriaService : ICategoriaService
         _categoriaRep = categoriaRep;
     }
 
-    public async Task<IEnumerable<CategoriaResponse>> ObterCategoriaAsync(string idUser)
+    public async Task<IEnumerable<CategoriaResponse>> ObterAsync()
     {
-        return await _categoriaRep.ObtemCategoria(idUser);
+        return await _categoriaRep.ObterAsync();
     }
-    public async Task IncluirCategoria(CategoriaCadastroRequest categoria, ApplicationUser user)
+    public async Task IncluirAsync(CategoriaCadastroRequest categoria)
     {
-        var categoriaInserir = new Categoria(categoria.Nome, categoria.Descricao, categoria.Tipo.ToString());
-    }
-    public Task IncluirCategoriaAsync(CategoriaCadastroRequest Categoria)
-    {
-        throw new NotImplementedException();
+        var categoriaInserir = CategoriaFactory.
+            Create(categoria.Nome,
+            categoria.Descricao,
+            categoria.Tipo.ToString());
+
+        await _categoriaRep.IncluirAsync(categoriaInserir);
     }
 
-    public Task<IEnumerable<CategoriaResponse>> ObterCategoriaAsync()
+    public async Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria)
     {
-        throw new NotImplementedException();
+        var categoria = await _categoriaRep.ObterCategoriaByIdAsync(idCategoria);
+
+        if (categoria is null)
+            throw new Exception("Categoria não encontrada");
+
+        return categoria;
     }
 }
