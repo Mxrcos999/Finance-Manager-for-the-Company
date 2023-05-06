@@ -5,6 +5,7 @@ public sealed class UserRegisterResponse
     public bool Success => Errors.Count == 0;
 
     public List<string> Errors { get; private set; }
+    public string SucessMessage { get; set; } 
 
     public UserRegisterResponse()
     {

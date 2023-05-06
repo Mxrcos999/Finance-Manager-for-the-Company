@@ -28,7 +28,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         _userManager = userManager;
     }
 
-    public async Task<IEnumerable<ContaFinanceiraResponse>> ObtemContaFinanceira(string idUser)
+    public async Task<IEnumerable<ContaFinanceiraResponse>> ObtemContaFinanceira()
     {
         var contas = from Contas in _contaFinanceiras
                        .AsNoTracking()

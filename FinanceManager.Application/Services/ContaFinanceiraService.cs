@@ -15,12 +15,12 @@ public class ContaFinanceiraService : IContaFinanceiraService
     {
         _contaFinanceiraRepository = contaFinanceiraRepository;
     }
-    public async Task<IEnumerable<ContaFinanceiraResponse>> ObterContasFinanceiras(string idUser)
+    public async Task<IEnumerable<ContaFinanceiraResponse>> ObterContasFinanceiras()
     {
-        return await _contaFinanceiraRepository.ObtemContaFinanceira(idUser);
+        return await _contaFinanceiraRepository.ObtemContaFinanceira();
     }
 
-    public async Task IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira, ApplicationUser user)
+    public async Task IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira)
     {
         var categoriaObtida = await _contaFinanceiraRepository.ObterCategoriaByIdAsync(contaFinanceira.CategoriaId);
 
@@ -28,24 +28,8 @@ public class ContaFinanceiraService : IContaFinanceiraService
             throw new DataException("Não foi encontrada nenhuma categoria com o id informado", new Exception("Não foi encontrada nenhuma categoria com o id informado"));
    
         var contaFinanceriaInserir = ContaFinanceiraFactory.Create(contaFinanceira.ValorLancamento, contaFinanceira.TipoLancamento, categoriaObtida);
-        contaFinanceriaInserir.UsuarioId = user.Id;
   
-        var userAtualizado = await AtualizaSaldoUsuario(user, contaFinanceriaInserir);
         await _contaFinanceiraRepository.IncluirContaFinanceiraAsync(contaFinanceriaInserir);
-    }
-
-    private async Task<ApplicationUser> AtualizaSaldoUsuario(ApplicationUser user, ContaFinanceira contaFinanceira)
-    {
-        if (contaFinanceira.TipoLancamento == ContaFinanceira.TiposLancamento.Credito)
-        {
-            user.Saldo += contaFinanceira.ValorLancamento;
-            return user;
-        }
-        else
-        {
-            user.Saldo -= contaFinanceira.ValorLancamento;
-            return user;
-        }
     }
 }
 

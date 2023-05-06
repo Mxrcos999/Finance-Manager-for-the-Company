@@ -10,5 +10,6 @@ public sealed class PessoaJuridicaCadastroRequest : PessoaCadastroRequest
     public string RazaoSocial { get; set; }
     [Required(ErrorMessage = "O campo CNPJ é obrigatório")]
     public string Cnpj { get; set; }
+    public ICollection<TelefoneCadastroRequest> Telefone { get; set; }
     public DateTime DataAberturaEmpresa { get; set; }
 }

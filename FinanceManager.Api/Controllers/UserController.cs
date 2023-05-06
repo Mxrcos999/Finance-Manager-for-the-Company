@@ -48,7 +48,7 @@ namespace FinanceManager.Api.Controllers
 
         [HttpPost]
         [Route("api/users/confirmEmail")]
-        public async Task<IActionResult> ConfirmEmailUser(string token, string idUser)
+        public async Task<IActionResult> ConfirmEmailUser(string token,string idUser)
         {
 
             if (!ModelState.IsValid)

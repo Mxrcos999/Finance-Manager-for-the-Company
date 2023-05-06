@@ -10,5 +10,4 @@ public sealed class PessoaFisicaCadastroRequest : PessoaCadastroRequest
     public string Nome { get; set; }
     [Required(ErrorMessage = "O campo data de nascimento é obrigatório")]
     public DateTime DataNascimento { get; set; }
-    public ICollection<EmpregadorCadastroRequest> Empregador { get; set; }
 }

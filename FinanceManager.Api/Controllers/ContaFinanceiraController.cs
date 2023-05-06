@@ -13,28 +13,23 @@ namespace FinanceManager.Api.Controllers;
 public class ContaFinanceiraController : Controller
 {
     private readonly IContaFinanceiraService _contaFinanceiraService;
-    private readonly UserManager<ApplicationUser> _userManager;
 
     public ContaFinanceiraController(IContaFinanceiraService contaFinanceiraService, UserManager<ApplicationUser> userManager)
     {
         _contaFinanceiraService = contaFinanceiraService;
-        _userManager = userManager;
     }
 
     [HttpGet]
     [Route("api/historico")]
     public async Task<IEnumerable<ContaFinanceiraResponse>> GetContaFinanceirasASync()
     {
-        var usuarioLogado = await _userManager.GetUserAsync(User);
-        var id = usuarioLogado.Id;
-        return await _contaFinanceiraService.ObterContasFinanceiras(id);
+        return await _contaFinanceiraService.ObterContasFinanceiras();
     }
 
     [HttpPost]
     [Route("api/historico/lancamento")]
     public async Task PostEntradaASync([FromBody] ContaFinanceiraCadastroRequest conta)
     {
-        var usuarioLogado = await _userManager.GetUserAsync(User);
-        await _contaFinanceiraService.IncluirContaFinanceira(conta, usuarioLogado);
+        await _contaFinanceiraService.IncluirContaFinanceira(conta);
     }
 }

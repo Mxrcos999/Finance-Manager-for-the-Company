@@ -97,11 +97,12 @@ public class IdentityService : IIdentityService
 
             }
         }
+        else
         {
             var token = await GerarTokenEmail(user.Email);
 
             _emailSender.SendEmail(user.PessoaJuridica.RazaoSocial, user.Email, token);
-            userRegisterResponse.AddError("Um link de confirmação foi enviado para seu email!");
+            userRegisterResponse.SucessMessage = "Um link de confirmação foi enviado para seu email!";
         }
 
 
@@ -149,7 +150,7 @@ public class IdentityService : IIdentityService
             var token = await GerarTokenEmail(user.Email);
 
             _emailSender.SendEmail(user.PessoaFisica.Nome, user.Email, token);
-            userRegisterResponse.AddError("Um link de confirmação foi enviado para seu email!");
+            userRegisterResponse.SucessMessage = "Um link de confirmação foi enviado para seu email!";
         }
 
         return userRegisterResponse;
