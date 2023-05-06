@@ -2,6 +2,7 @@
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain.Entidades;
+using System.Data;
 
 namespace FinanceManager.Application.Services;
 
@@ -22,8 +23,9 @@ public class ContaFinanceiraService : IContaFinanceiraService
 
     public async Task IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira, ApplicationUser user)
     {
-        var categoriaObtida = await _contaFinanceiraRepository.ObterCategoriaByNomeAsync(user.Id, contaFinanceira.Categoria.Id);
-
+        var categoriaObtida = await _contaFinanceiraRepository.ObterCategoriaByNomeAsync(contaFinanceira.CategoriaId);
+        if (categoriaObtida is null)
+            throw new DataException("Não foi encontrada nenhuma categoria com o id informado", new Exception("Não foi encontrada nenhuma categoria com o id informado"));
         var contaFinanceriaInserir = _contaFinanceiraFactory.Create(contaFinanceira, categoriaObtida);
         contaFinanceriaInserir.UsuarioId = user.Id;
         var userAtualizado = await AtualizaSaldoUsuario(user, contaFinanceriaInserir);

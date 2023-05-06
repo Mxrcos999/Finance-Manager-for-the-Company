@@ -2,6 +2,7 @@
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace FinanceManager.Infrastructure.Repository;
 
@@ -12,7 +13,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
     private readonly DbSet<ApplicationUser> _user;
     private readonly DbSet<Categoria> _categorias;
     private readonly IUnitOfWork _unitOfWork;
-
+    private readonly string IdUsuarioLogado;
 
     public ContaFinanceiraRepository(FinanceManagerContext context, IUnitOfWork unitOfWork)
     {
@@ -21,6 +22,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         _user = context.Set<ApplicationUser>();
         _categorias = context.Set<Categoria>();
         _unitOfWork = unitOfWork;
+        IdUsuarioLogado = _context._httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
     public async Task<IEnumerable<ContaFinanceiraResponse>> ObtemContaFinanceira(string idUser)
@@ -29,7 +31,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
                        .AsNoTracking()
                        .Include(i => i.Categorias)
                        .Include(i => i.Usuario)
-                       .Where(wh => wh.UsuarioId == idUser)
+                       .Where(wh => wh.UsuarioId == IdUsuarioLogado)
                        .OrderBy(ob => ob.Datalancamento)
                      select new ContaFinanceiraResponse()
                      {
@@ -48,7 +50,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         return contas.AsEnumerable();
     }   
     
-    public async Task<Categoria> ObterCategoriaByNomeAsync(string idUser, int? idCategoria)
+    public async Task<Categoria> ObterCategoriaByNomeAsync(int? idCategoria)
     {
         var categoria = await _categorias
             .Where(wh => wh.Id == idCategoria).SingleOrDefaultAsync();
@@ -63,6 +65,8 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
     {
         try
         {
+            contaFinanceira.UsuarioId = IdUsuarioLogado;
+            
             _user.Update(user);
             await _contaFinanceiras.AddAsync(contaFinanceira);
             await _unitOfWork.CommitAsync();
@@ -71,6 +75,20 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         {
             await _unitOfWork.Rollback();
             throw;
+        }
+    }
+
+    private async Task<ApplicationUser> AtualizaSaldoUsuario(ApplicationUser user, ContaFinanceira contaFinanceira)
+    {
+        if (contaFinanceira.TipoLancamento == ContaFinanceira.TiposLancamento.Credito)
+        {
+            user.Saldo += contaFinanceira.ValorLancamento;
+            return user;
+        }
+        else
+        {
+            user.Saldo -= contaFinanceira.ValorLancamento;
+            return user;
         }
     }
 }

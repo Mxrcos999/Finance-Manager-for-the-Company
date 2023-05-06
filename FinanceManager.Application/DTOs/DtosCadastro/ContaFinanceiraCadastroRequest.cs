@@ -10,5 +10,5 @@ public sealed class ContaFinanceiraCadastroRequest
     [Required(ErrorMessage = "O tipo de lançamento deve ser informado! (Crédito | Débito)")]
     public TiposLancamento TipoLancamento { get; set; }
     [Required(ErrorMessage = "A categoria deve ser informada!")]
-    public CategoriaCadastroRequest Categoria { get; set; }
+    public int? CategoriaId { get; set; }
 }

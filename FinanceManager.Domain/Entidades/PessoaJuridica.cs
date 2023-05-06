@@ -5,6 +5,7 @@ public class PessoaJuridica : Pessoa
     public string? RazaoSocial { get; private set; }
     public string? Cnpj { get; private set; }
     public decimal? FaturamentoMensal { get; private set; }
+    public DateTime? DataAberturaEmpresa { get; private set; }
     public decimal? FaturamentoAnual { get; private set; }
 
     public PessoaJuridica(string? razaoSocial, string? cnpj, decimal? faturamentoMensal,
