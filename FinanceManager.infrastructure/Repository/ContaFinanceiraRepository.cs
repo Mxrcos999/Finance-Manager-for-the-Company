@@ -1,6 +1,7 @@
 ﻿using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain.Entidades;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -14,8 +15,9 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
     private readonly DbSet<Categoria> _categorias;
     private readonly IUnitOfWork _unitOfWork;
     private readonly string IdUsuarioLogado;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public ContaFinanceiraRepository(FinanceManagerContext context, IUnitOfWork unitOfWork)
+    public ContaFinanceiraRepository(FinanceManagerContext context, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
     {
         _context = context;
         _contaFinanceiras = context.Set<ContaFinanceira>();
@@ -23,6 +25,7 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         _categorias = context.Set<Categoria>();
         _unitOfWork = unitOfWork;
         IdUsuarioLogado = _context._httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        _userManager = userManager;
     }
 
     public async Task<IEnumerable<ContaFinanceiraResponse>> ObtemContaFinanceira(string idUser)
@@ -50,10 +53,10 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         return contas.AsEnumerable();
     }   
     
-    public async Task<Categoria> ObterCategoriaByNomeAsync(int? idCategoria)
+    public async Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria)
     {
         var categoria = await _categorias
-            .Where(wh => wh.Id == idCategoria).SingleOrDefaultAsync();
+            .Where(wh => wh.Id == idCategoria && wh.UsuarioId == IdUsuarioLogado).SingleOrDefaultAsync();
        
         if(categoria is null) 
             return null;
@@ -61,19 +64,23 @@ public class ContaFinanceiraRepository : IContaFinanceiraRepository
         return categoria;
     }
 
-    public async Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira, ApplicationUser user)
+    public async Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira)
     {
         try
         {
+            var userLogado = await _userManager.FindByIdAsync(IdUsuarioLogado);
+
             contaFinanceira.UsuarioId = IdUsuarioLogado;
             
-            _user.Update(user);
+            var userAtualizado = await AtualizaSaldoUsuario(userLogado, contaFinanceira);
+
+            _user.Update(userAtualizado);
             await _contaFinanceiras.AddAsync(contaFinanceira);
             await _unitOfWork.CommitAsync();
         }
         catch (Exception)
         {
-            await _unitOfWork.Rollback();
+            await _unitOfWork.RollbackAsync();
             throw;
         }
     }

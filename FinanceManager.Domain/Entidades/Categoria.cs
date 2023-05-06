@@ -10,6 +10,8 @@ public class Categoria : EntidadeBase
     public string Tipo { get; private set; }
     public int ContaFinanceiraId { get;  set; }
     public ICollection<ContaFinanceira> ContaFinanceira { get;  set; }
+    public string UsuarioId { get; set; }
+    public ApplicationUser Usuario { get; set; }
     public Categoria() {}
 
     public Categoria(string nome, string descricao, string tipo)

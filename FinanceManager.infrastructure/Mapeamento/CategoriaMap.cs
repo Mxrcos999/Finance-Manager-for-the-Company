@@ -12,5 +12,11 @@ public class CategoriaMap : IEntityTypeConfiguration<Categoria>
             .HasMany(wm => wm.ContaFinanceira)
             .WithOne(wo => wo.Categorias)
             .HasForeignKey(fk => fk.CategoriaId);
+
+        builder
+            .HasOne(m => m.Usuario)
+            .WithMany(w => w.Categorias)
+            .HasForeignKey(fk => fk.UsuarioId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

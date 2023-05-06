@@ -3,5 +3,5 @@
 public interface IUnitOfWork : IDisposable
 {
     Task<bool> CommitAsync();
-    Task Rollback();
+    Task RollbackAsync();
 }

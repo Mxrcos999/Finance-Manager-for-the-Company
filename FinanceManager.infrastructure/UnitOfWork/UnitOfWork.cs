@@ -20,7 +20,7 @@ public class UnitOfWork : IUnitOfWork
     public void Dispose() =>
    _context.Dispose();
 
-    public Task Rollback()
+    public Task RollbackAsync()
     {
         return Task.CompletedTask;
     }

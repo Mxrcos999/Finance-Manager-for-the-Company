@@ -21,6 +21,7 @@ public class FinanceManagerContext : IdentityDbContext<ApplicationUser>
     public DbSet<ApplicationUser> applicationUsers { get; set; }
     public DbSet<PessoaFisica> pessoasfisicas { get; set; }
     public DbSet<PessoaJuridica> pessoasjuridicas { get; set; }
+    public DbSet<LancamentoRecorrente> lancamentosrecorrentes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
