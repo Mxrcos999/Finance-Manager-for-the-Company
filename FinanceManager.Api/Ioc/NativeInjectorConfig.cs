@@ -25,6 +25,8 @@ namespace FinanceManager.Api.Ioc
             services.AddScoped<IContaFinanceiraRepository, ContaFinanceiraRep>();
             services.AddScoped<ILancamentoRecorrenteRep, LancamentoRecorrenteRep>();
             services.AddScoped<ILancamentoRecorrenteService, LancamentoRecorrenteService>();
+            services.AddScoped<ICategoriaRep, CategoriaRep>();
+            services.AddScoped<ICategoriaService, CategoriaService>();
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
            options.TokenLifespan = TimeSpan.FromHours(2));

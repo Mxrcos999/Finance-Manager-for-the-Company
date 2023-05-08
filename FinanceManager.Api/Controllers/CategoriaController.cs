@@ -35,7 +35,7 @@ public class CategoriaController
         await _categoriaService.IncluirAsync(categoria);
     }
 
-    [HttpGet]
+    [HttpGet("id")]
     public async Task<Categoria> GetCategoriaByIdAsync(int id)
     {
         return await _categoriaService.ObterCategoriaByIdAsync(id);
