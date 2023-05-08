@@ -35,7 +35,7 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
                        .Include(i => i.Categorias)
                        .Include(i => i.Usuario)
                        .Where(wh => wh.UsuarioId == IdUsuarioLogado)
-                       .OrderBy(ob => ob.Datalancamento)
+                      orderby Contas.Datalancamento descending
                      select new ContaFinanceiraResponse()
                      {
                          SaldoAtual = Contas.Usuario.Saldo,
@@ -53,7 +53,7 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
         return contas.AsEnumerable();
     }   
 
-    public async Task IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira)
+    public async Task<IEnumerable<ContaFinanceiraResponse>> IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira)
     {
         try
         {
@@ -65,7 +65,11 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
 
             _user.Update(userAtualizado);
             await _contaFinanceiras.AddAsync(contaFinanceira);
-            await _unitOfWork.CommitAsync();
+            var result = await _unitOfWork.CommitAsync();
+            if(result)
+                return await ObtemContaFinanceira();
+
+            return null;
         }
         catch (Exception)
         {

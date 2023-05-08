@@ -28,8 +28,13 @@ public class ContaFinanceiraController : Controller
 
     [HttpPost]
     [Route("api/historico/lancamento")]
-    public async Task PostEntradaASync([FromBody] ContaFinanceiraCadastroRequest conta)
+    public async Task<IActionResult> PostEntradaASync([FromBody] ContaFinanceiraCadastroRequest conta)
     {
-        await _contaFinanceiraService.IncluirContaFinanceira(conta);
+        var historico = await _contaFinanceiraService.IncluirContaFinanceira(conta);
+
+        if (historico is null)
+            return BadRequest();
+
+        return Ok(historico);
     }
 }

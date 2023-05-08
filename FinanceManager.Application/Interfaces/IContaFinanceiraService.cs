@@ -7,6 +7,6 @@ namespace FinanceManager.Application.Interfaces;
 
 public interface IContaFinanceiraService
 {
-    Task IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira);
+    Task<IEnumerable<ContaFinanceiraResponse>> IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira);
     Task<IEnumerable<ContaFinanceiraResponse>> ObterContasFinanceiras();
 }
