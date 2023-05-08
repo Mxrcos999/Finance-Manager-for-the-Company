@@ -1,4 +1,5 @@
-﻿using FinanceManager.Application.DTOs.DtosCadastro;
+﻿using FinanceManager.Application.DTOs.DtoQuery;
+using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain.Factory;
@@ -16,9 +17,9 @@ public class ContaFinanceiraService : IContaFinanceiraService
         _contaFinanceiraRepository = contaFinanceiraRepository;
         _categoriaRep = categoriaRep;
     }
-    public async Task<IEnumerable<ContaFinanceiraResponse>> ObterContasFinanceiras()
+    public async Task<IEnumerable<ContaFinanceiraResponse>> ObterContasFinanceiras(HistoricoQuery historicoQuery)
     {
-        return await _contaFinanceiraRepository.ObtemContaFinanceira();
+        return await _contaFinanceiraRepository.ObtemContaFinanceira(historicoQuery);
     }
 
     public async Task<IEnumerable<ContaFinanceiraResponse>> IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira)

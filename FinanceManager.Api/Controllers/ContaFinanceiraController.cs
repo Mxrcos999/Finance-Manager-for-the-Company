@@ -1,4 +1,5 @@
-﻿using FinanceManager.Application.DTOs.DtosCadastro;
+﻿using FinanceManager.Application.DTOs.DtoQuery;
+using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain.Entidades;
@@ -21,9 +22,9 @@ public class ContaFinanceiraController : Controller
 
     [HttpGet]
     [Route("api/historico")]
-    public async Task<IEnumerable<ContaFinanceiraResponse>> GetContaFinanceirasASync()
+    public async Task<IEnumerable<ContaFinanceiraResponse>> GetContaFinanceirasASync([FromQuery] DateTime dataHoraInicial, [FromQuery] DateTime dataHoraFinal)
     {
-        return await _contaFinanceiraService.ObterContasFinanceiras();
+        return await _contaFinanceiraService.ObterContasFinanceiras(new HistoricoQuery(dataHoraInicial, dataHoraFinal));
     }
 
     [HttpPost]

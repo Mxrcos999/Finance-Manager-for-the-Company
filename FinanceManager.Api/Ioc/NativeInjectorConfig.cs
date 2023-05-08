@@ -9,6 +9,7 @@ using FinanceManager.Infrastructure;
 using FinanceManager.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace FinanceManager.Api.Ioc
 {
@@ -31,8 +32,7 @@ namespace FinanceManager.Api.Ioc
             services.Configure<DataProtectionTokenProviderOptions>(options =>
            options.TokenLifespan = TimeSpan.FromHours(2));
             services.Configure<EmailSenderOptions>(configuration.GetSection("EmailSenderOptions"));
-
-
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             services.Configure<DataProtectionTokenProviderOptions>("EmailConfirmation", options =>
             {
                 options.TokenLifespan = TimeSpan.FromHours(2);
