@@ -18,7 +18,8 @@ public class Categoria : EntidadeBase
     {
         Nome = nome;
         Descricao = descricao;  
-        Tipo = tipo;    
+        Tipo = tipo;
+        DataHoraCadastro = DateTime.Now.ToUniversalTime();
     }
     public enum TipoCategoria
     {

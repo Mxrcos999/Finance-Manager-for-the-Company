@@ -7,7 +7,7 @@ namespace FinanceManager.Api.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("api/openai/athena")]
+[Route("api/servico-externo/openai/athena")]
 public class AthenaController : Controller
 {
     [HttpPost]

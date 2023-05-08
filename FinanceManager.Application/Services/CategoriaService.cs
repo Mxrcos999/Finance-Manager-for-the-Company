@@ -19,14 +19,18 @@ public class CategoriaService : ICategoriaService
     {
         return await _categoriaRep.ObterAsync();
     }
-    public async Task IncluirAsync(CategoriaCadastroRequest categoria)
+    public async Task<IEnumerable<CategoriaResponse>> IncluirAsync(CategoriaCadastroRequest categoria)
     {
         var categoriaInserir = CategoriaFactory.
             Create(categoria.Nome,
             categoria.Descricao,
             categoria.Tipo.ToString());
 
-        await _categoriaRep.IncluirAsync(categoriaInserir);
+        var categoriasAtualizadas = await _categoriaRep.IncluirAsync(categoriaInserir);
+
+        if (categoriasAtualizadas is null)
+            return null;
+        return categoriasAtualizadas;
     }
 
     public async Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria)

@@ -21,6 +21,7 @@ public class LancamentoRecorrente : EntidadeBase
         DataPrevistaLancamento = dataPrevistaLancamentoRecorrente;
         TipoLancamento = tipoLancamento;
         Categoria = categoria;
+        DataHoraCadastro = DateTime.Now.ToUniversalTime();
     }
 
 }

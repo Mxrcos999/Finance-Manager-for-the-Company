@@ -30,7 +30,7 @@ public class CategoriaRep : ICategoriaRep
         var categoriaObtida = from categoria in _categorias
                       .AsNoTracking()
                       .Where(wh => wh.UsuarioId == IdUsuarioLogado)
-                      .OrderBy(ob => ob.DataHoraCadastro)
+                      orderby categoria.DataHoraCadastro descending
                               select new CategoriaResponse()
                               {
 
@@ -42,13 +42,18 @@ public class CategoriaRep : ICategoriaRep
         return categoriaObtida.AsEnumerable();
     }
 
-    public async Task IncluirAsync(Categoria categoria)
+    public async Task<IEnumerable<CategoriaResponse>> IncluirAsync(Categoria categoria)
     {
         try
         {
+            categoria.UsuarioId = IdUsuarioLogado;
             await _categorias.AddAsync(categoria);
 
-            await _unitOfWork.CommitAsync();
+            var result = await _unitOfWork.CommitAsync();
+
+            if (result)
+                return await ObterAsync();
+            return null;
         }
         catch (Exception)
         {

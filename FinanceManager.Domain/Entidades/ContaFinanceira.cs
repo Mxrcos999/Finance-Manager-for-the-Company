@@ -22,6 +22,7 @@ public class ContaFinanceira : EntidadeBase
         TipoLancamento = tipoLancamento;
         Datalancamento = DateTime.Now.ToUniversalTime();
         Categorias = categoria;
+        DataHoraCadastro = DateTime.Now.ToUniversalTime();
     }
     public enum TiposLancamento
     {

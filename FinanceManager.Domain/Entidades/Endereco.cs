@@ -16,6 +16,7 @@ public class Endereco : EntidadeBase
         Uf = uf;
         Cep = cep;
         TipoLogradouro = tipoLogradouro;
+        DataHoraCadastro = DateTime.Now.ToUniversalTime();
     }
 
     public Endereco()

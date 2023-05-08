@@ -8,7 +8,7 @@ namespace FinanceManager.Application.Interfaces;
 
 public interface ICategoriaService
 {
-    Task IncluirAsync(CategoriaCadastroRequest Categoria);
+    Task<IEnumerable<CategoriaResponse>> IncluirAsync(CategoriaCadastroRequest categoria);
     Task<IEnumerable<CategoriaResponse>> ObterAsync();
     Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria);
 }

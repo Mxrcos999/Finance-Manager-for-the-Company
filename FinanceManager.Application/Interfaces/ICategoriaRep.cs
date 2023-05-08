@@ -8,6 +8,6 @@ namespace FinanceManager.Application.Interfaces;
 public interface ICategoriaRep
 {
     Task<IEnumerable<CategoriaResponse>> ObterAsync();
-    Task IncluirAsync(Categoria categoria);
+    Task<IEnumerable<CategoriaResponse>> IncluirAsync(Categoria categoria);
     Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria);
 }
