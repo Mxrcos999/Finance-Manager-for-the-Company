@@ -1,9 +1,4 @@
-﻿using FinanceManager.Application.DTOs.DtosCadastro;
-using FinanceManager.Domain;
-using FinanceManager.Domain.Entidades;
-using static FinanceManager.Domain.Entidades.ContaFinanceira;
-
-namespace FinanceManager.Application.DTOs.DtosResponse;
+﻿namespace FinanceManager.Application.DTOs.DtosResponse;
 
 public class ContaFinanceiraResponse
 {

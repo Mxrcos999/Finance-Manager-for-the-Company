@@ -31,15 +31,12 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
 
     public async Task<IEnumerable<ContaFinanceiraResponse>> ObtemContaFinanceira(HistoricoQuery historicoQuery)
     {
-        DateTimeOffset dataInicio = new DateTime(2023, 05, 01).ToUniversalTime();
-        DateTime dataFinal = new DateTime(2023, 05, 05).ToUniversalTime();
-
         var contas = from Contas in _contaFinanceiras
                        .AsNoTracking()
                        .Include(i => i.Categorias)
                        .Include(i => i.Usuario)
                        .Where(historicoQuery.CreateFilterExpression())
-                      orderby Contas.Datalancamento descending
+                     orderby Contas.Datalancamento descending
                      select new ContaFinanceiraResponse()
                      {
                          SaldoAtual = Contas.Usuario.Saldo,
@@ -48,14 +45,16 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
                          ValorLancamento = Contas.ValorLancamento,
                          Categoria = new CategoriaResponse()
                          {
+                             Id = Contas.Categorias.Id,
                              Nome = Contas.Categorias.Nome,
                              Descricao = Contas.Categorias.Descricao,
-                             TipoCategoria = Contas.Categorias.Tipo.ToString()
+                             TipoCategoria = Contas.Categorias.Tipo
                          }
 
                      };
+
         return contas.AsEnumerable();
-    }   
+    }
 
     public async Task<IEnumerable<ContaFinanceiraResponse>> IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira)
     {
@@ -64,13 +63,13 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
             var userLogado = await _userManager.FindByIdAsync(IdUsuarioLogado);
 
             contaFinanceira.UsuarioId = IdUsuarioLogado;
-            
+
             var userAtualizado = await AtualizaSaldoUsuario(userLogado, contaFinanceira);
 
             _user.Update(userAtualizado);
             await _contaFinanceiras.AddAsync(contaFinanceira);
             var result = await _unitOfWork.CommitAsync();
-            if(result)
+            if (result)
                 return await ObtemContaFinanceira(new HistoricoQuery(new DateTime(2023, 05, 01), new DateTime(2023, 05, 31)));
 
             return null;
