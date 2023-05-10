@@ -11,25 +11,25 @@ namespace FinanceManager.Api.Controllers;
 
 [Authorize]
 [ApiController]
-public class ContaFinanceiraController : Controller
+public class LancamentoController : Controller
 {
-    private readonly IContaFinanceiraService _contaFinanceiraService;
+    private readonly ILancamentoService _contaFinanceiraService;
 
-    public ContaFinanceiraController(IContaFinanceiraService contaFinanceiraService, UserManager<ApplicationUser> userManager)
+    public LancamentoController(ILancamentoService contaFinanceiraService, UserManager<ApplicationUser> userManager)
     {
         _contaFinanceiraService = contaFinanceiraService;
     }
 
     [HttpGet]
     [Route("api/historico")]
-    public async Task<IEnumerable<ContaFinanceiraResponse>> GetContaFinanceirasASync([FromQuery] DateTime? dataHoraInicial, [FromQuery] DateTime? dataHoraFinal)
+    public async Task<IEnumerable<LancamentoResponse>> GetContaFinanceirasASync([FromQuery] DateTime? dataHoraInicial, [FromQuery] DateTime? dataHoraFinal)
     {
         return await _contaFinanceiraService.ObterContasFinanceiras(new HistoricoQuery(dataHoraInicial, dataHoraFinal));
     }
 
     [HttpPost]
     [Route("api/historico/lancamento")]
-    public async Task<IActionResult> PostEntradaASync([FromBody] ContaFinanceiraCadastroRequest conta)
+    public async Task<IActionResult> PostEntradaASync([FromBody] LancamentoCadastroRequest conta)
     {
         var historico = await _contaFinanceiraService.IncluirContaFinanceira(conta);
 

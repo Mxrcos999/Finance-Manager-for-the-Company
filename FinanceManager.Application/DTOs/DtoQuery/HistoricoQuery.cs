@@ -16,17 +16,17 @@ public sealed class HistoricoQuery
     public DateTime? DataHoraInicial { get; set; }
     public DateTime? DataHoraFinal{ get; set; }
 
-    public Expression<Func<ContaFinanceira, bool>> CreateFilterExpression(string? idUsuario = null)
+    public Expression<Func<Lancamento, bool>> CreateFilterExpression(string? idUsuario = null)
     {
         if (DataHoraInicial is null && DataHoraFinal is null)
         {
-            var user = PredicateBuilder.True<ContaFinanceira>()
+            var user = PredicateBuilder.True<Lancamento>()
               .And(p => p.UsuarioId == idUsuario);
             return user;
         }
           
 
-        var predicate = PredicateBuilder.True<ContaFinanceira>()
+        var predicate = PredicateBuilder.True<Lancamento>()
             .And(p => p.Datalancamento >= DataHoraInicial)
             .And(p => p.Datalancamento <= DataHoraFinal);
 

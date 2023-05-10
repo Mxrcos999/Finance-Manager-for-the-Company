@@ -13,7 +13,7 @@ public class CategoriaRep : ICategoriaRep
     private readonly FinanceManagerContext _context;
     private readonly DbSet<ApplicationUser> _user;
     private readonly DbSet<Categoria> _categorias;
-    private readonly DbSet<ContaFinanceira> _lancamentos;
+    private readonly DbSet<Lancamento> _lancamentos;
     private readonly IUnitOfWork _unitOfWork;
     private readonly string IdUsuarioLogado;
 
@@ -21,7 +21,7 @@ public class CategoriaRep : ICategoriaRep
     {
         _context = context;
         _user = context.Set<ApplicationUser>();
-        _lancamentos = context.Set<ContaFinanceira>();
+        _lancamentos = context.Set<Lancamento>();
         _categorias = context.Set<Categoria>();
         _unitOfWork = unitOfWork;
         IdUsuarioLogado = _context._httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

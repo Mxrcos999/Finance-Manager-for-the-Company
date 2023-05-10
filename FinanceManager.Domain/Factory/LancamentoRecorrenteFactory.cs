@@ -1,5 +1,5 @@
 ﻿using FinanceManager.Domain.Entidades;
-using static FinanceManager.Domain.Entidades.ContaFinanceira;
+using static FinanceManager.Domain.Entidades.Lancamento;
 
 namespace FinanceManager.Domain.Factory;
 

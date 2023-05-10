@@ -8,11 +8,11 @@ namespace FinanceManager.Application.Services;
 public class LancamentoRecorrenteService : ILancamentoRecorrenteService
 {
     private readonly ILancamentoRecorrenteRep _lancamentoRecorrenteRep;
-    private readonly IContaFinanceiraRepository _contaFinanceiraRepository;
+    private readonly ILancamentoRep _contaFinanceiraRepository;
     private readonly ICategoriaRep _categoriaRep;
 
 
-    public LancamentoRecorrenteService(ILancamentoRecorrenteRep lancamentoRecorrenteRep, IContaFinanceiraRepository contaFinanceiraRepository, ICategoriaRep categoriaRep)
+    public LancamentoRecorrenteService(ILancamentoRecorrenteRep lancamentoRecorrenteRep, ILancamentoRep contaFinanceiraRepository, ICategoriaRep categoriaRep)
     {
         _lancamentoRecorrenteRep = lancamentoRecorrenteRep;
         _contaFinanceiraRepository = contaFinanceiraRepository;
@@ -32,11 +32,12 @@ public class LancamentoRecorrenteService : ILancamentoRecorrenteService
              lancamento.TipoLancamento,
              categoriaObtida);
 
-        var contaFinanceira = ContaFinanceiraFactory
+        var contaFinanceira = LancamentoFactory
             .Create
             (lancamentoRecorrente.ValorLancamento,
             lancamentoRecorrente.TipoLancamento,
-            lancamentoRecorrente.Categoria);
+            lancamentoRecorrente.Categoria,
+            lancamentoRecorrente.TituloLancamentoRecorrente);
 
         await _lancamentoRecorrenteRep.IncluirAsync(lancamentoRecorrente);
         await _contaFinanceiraRepository.IncluirContaFinanceiraAsync(contaFinanceira);

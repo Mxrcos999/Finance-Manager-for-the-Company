@@ -1,7 +1,8 @@
 ﻿namespace FinanceManager.Application.DTOs.DtosResponse;
 
-public class ContaFinanceiraResponse
+public class LancamentoResponse
 {
+    public string TituloLancamento { get; set; }
     public decimal? SaldoAtual { get; set; }
     public decimal ValorLancamento { get; set; }
     public string TipoLancamento { get; set; }

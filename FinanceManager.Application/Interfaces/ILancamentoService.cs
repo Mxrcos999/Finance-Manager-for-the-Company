@@ -6,8 +6,8 @@ using FinanceManager.Domain.Entidades;
 
 namespace FinanceManager.Application.Interfaces;
 
-public interface IContaFinanceiraService
+public interface ILancamentoService
 {
-    Task<IEnumerable<ContaFinanceiraResponse>> IncluirContaFinanceira(ContaFinanceiraCadastroRequest contaFinanceira);
-    Task<IEnumerable<ContaFinanceiraResponse>> ObterContasFinanceiras(HistoricoQuery historicoQuery);
+    Task<IEnumerable<LancamentoResponse>> IncluirContaFinanceira(LancamentoCadastroRequest contaFinanceira);
+    Task<IEnumerable<LancamentoResponse>> ObterContasFinanceiras(HistoricoQuery historicoQuery);
 }

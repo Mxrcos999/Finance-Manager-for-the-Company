@@ -1,10 +1,11 @@
 ﻿using FinanceManager.Domain.Utils;
-using static FinanceManager.Domain.Entidades.ContaFinanceira;
+using static FinanceManager.Domain.Entidades.Lancamento;
 
 namespace FinanceManager.Domain.Entidades;
 
 public class LancamentoRecorrente : EntidadeBase
 {
+    public string TituloLancamentoRecorrente { get; private set; }
     public decimal ValorLancamento { get; private set; }
     public DateTime DataPrevistaLancamento { get; private set; }
     public TiposLancamento TipoLancamento { get; private set; }

@@ -14,7 +14,7 @@ public class FinanceManagerContext : IdentityDbContext<ApplicationUser>
     {
         _httpContextAccessor = httpContextAccessor;
     }
-    public DbSet<ContaFinanceira> contasfinanceiras { get; set; }
+    public DbSet<Lancamento> historico { get; set; }
     public DbSet<Categoria> categorias { get; set; }
     public DbSet<Telefone> telefones { get; set; }
     public DbSet<Endereco> enderecos { get; set; }
@@ -29,7 +29,7 @@ public class FinanceManagerContext : IdentityDbContext<ApplicationUser>
             .ApplyConfiguration(new PessoaFisicaMap());
 
         modelBuilder
-            .ApplyConfiguration(new ContaFinanceiraMap());
+            .ApplyConfiguration(new LancamentoMap());
 
         base.OnModelCreating(modelBuilder);
     }

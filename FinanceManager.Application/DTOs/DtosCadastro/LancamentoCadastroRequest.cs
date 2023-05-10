@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static FinanceManager.Domain.Entidades.ContaFinanceira;
+using static FinanceManager.Domain.Entidades.Lancamento;
 
 namespace FinanceManager.Application.DTOs.DtosCadastro;
 
-public sealed class ContaFinanceiraCadastroRequest
+public sealed class LancamentoCadastroRequest
 {
+    [Required(ErrorMessage = "O titulo do lançamento deve ser informado")]
+    public string TituloLancamento { get; set; }
+    
     [Range(1, Double.PositiveInfinity, ErrorMessage = "O valor de lançamento deve ser maior que 0")]
     public decimal ValorLancamento { get; set; }
     [Required(ErrorMessage = "O tipo de lançamento deve ser informado! (Crédito | Débito)")]

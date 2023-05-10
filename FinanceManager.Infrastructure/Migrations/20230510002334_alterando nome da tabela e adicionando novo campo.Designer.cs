@@ -3,6 +3,7 @@ using System;
 using FinanceManager.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinanceManager.Infrastructure.Migrations
 {
     [DbContext(typeof(FinanceManagerContext))]
-    partial class FinanceManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20230510002334_alterando nome da tabela e adicionando novo campo")]
+    partial class alterandonomedatabelaeadicionandonovocampo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,9 +253,8 @@ namespace FinanceManager.Infrastructure.Migrations
                     b.Property<int>("TipoLancamento")
                         .HasColumnType("integer");
 
-                    b.Property<string>("TituloLancamento")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<decimal>("TituloLancamento")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("UsuarioId")
                         .IsRequired()

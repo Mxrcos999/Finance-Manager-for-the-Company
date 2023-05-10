@@ -5,7 +5,7 @@ namespace FinanceManager.Domain.Entidades;
 
 public class ApplicationUser : IdentityUser
 {
-    public ICollection<ContaFinanceira> ContasFinanceiras { get; set; }
+    public ICollection<Lancamento> ContasFinanceiras { get; set; }
     public ICollection<LancamentoRecorrente> LancamentosRecorrentes { get; set; }
     public ICollection<Categoria> Categorias { get; set; }
 

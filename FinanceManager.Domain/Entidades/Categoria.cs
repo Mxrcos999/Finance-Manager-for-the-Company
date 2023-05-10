@@ -1,5 +1,5 @@
 ﻿using FinanceManager.Domain.Utils;
-using static FinanceManager.Domain.Entidades.ContaFinanceira;
+using static FinanceManager.Domain.Entidades.Lancamento;
 
 namespace FinanceManager.Domain.Entidades;
 
@@ -9,7 +9,7 @@ public class Categoria : EntidadeBase
     public string Descricao { get; private set; }
     public string Tipo { get; private set; }
     public int ContaFinanceiraId { get;  set; }
-    public ICollection<ContaFinanceira> ContaFinanceira { get;  set; }
+    public ICollection<Lancamento> ContaFinanceira { get;  set; }
     public string UsuarioId { get; set; }
     public ApplicationUser Usuario { get; set; }
     public Categoria() {}

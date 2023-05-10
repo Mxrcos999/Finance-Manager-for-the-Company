@@ -18,12 +18,12 @@ namespace FinanceManager.Api.Ioc
         public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<FinanceManagerContext>(opts => opts.UseNpgsql(configuration.GetConnectionString("strConnection")));
-            services.AddScoped<IContaFinanceiraRepository, ContaFinanceiraRep>();
+            services.AddScoped<ILancamentoRep, LancamentoRep>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IContaFinanceiraService, ContaFinanceiraService>();
-            services.AddScoped<IContaFinanceiraRepository, ContaFinanceiraRep>();
+            services.AddScoped<ILancamentoService, LancamentoService>();
+            services.AddScoped<ILancamentoRep, LancamentoRep>();
             services.AddScoped<ILancamentoRecorrenteRep, LancamentoRecorrenteRep>();
             services.AddScoped<ILancamentoRecorrenteService, LancamentoRecorrenteService>();
             services.AddScoped<ICategoriaRep, CategoriaRep>();

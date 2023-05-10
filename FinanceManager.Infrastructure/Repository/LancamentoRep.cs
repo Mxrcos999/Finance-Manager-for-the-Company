@@ -8,20 +8,20 @@ using System.Security.Claims;
 
 namespace FinanceManager.Infrastructure.Repository;
 
-public class ContaFinanceiraRep : IContaFinanceiraRepository
+public class LancamentoRep : ILancamentoRep
 {
     private readonly FinanceManagerContext _context;
-    private readonly DbSet<ContaFinanceira> _contaFinanceiras;
+    private readonly DbSet<Lancamento> _contaFinanceiras;
     private readonly DbSet<ApplicationUser> _user;
     private readonly DbSet<Categoria> _categorias;
     private readonly IUnitOfWork _unitOfWork;
     private readonly string IdUsuarioLogado;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public ContaFinanceiraRep(FinanceManagerContext context, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+    public LancamentoRep(FinanceManagerContext context, IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
     {
         _context = context;
-        _contaFinanceiras = context.Set<ContaFinanceira>();
+        _contaFinanceiras = context.Set<Lancamento>();
         _user = context.Set<ApplicationUser>();
         _categorias = context.Set<Categoria>();
         _unitOfWork = unitOfWork;
@@ -29,7 +29,7 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
         _userManager = userManager;
     }
 
-    public async Task<IEnumerable<ContaFinanceiraResponse>> ObtemContaFinanceira(HistoricoQuery historicoQuery)
+    public async Task<IEnumerable<LancamentoResponse>> ObtemContaFinanceira(HistoricoQuery historicoQuery)
     {
         var contas = from Contas in _contaFinanceiras
                        .AsNoTracking()
@@ -37,7 +37,7 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
                        .Include(i => i.Usuario)
                        .Where(historicoQuery.CreateFilterExpression(IdUsuarioLogado))
                      orderby Contas.Datalancamento descending
-                     select new ContaFinanceiraResponse()
+                     select new LancamentoResponse()
                      {
                          SaldoAtual = Contas.Usuario.Saldo,
                          Datalancamento = Contas.Datalancamento,
@@ -56,7 +56,7 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
         return contas.AsEnumerable();
     }
 
-    public async Task<IEnumerable<ContaFinanceiraResponse>> IncluirContaFinanceiraAsync(ContaFinanceira contaFinanceira)
+    public async Task<IEnumerable<LancamentoResponse>> IncluirContaFinanceiraAsync(Lancamento contaFinanceira)
     {
         try
         {
@@ -82,9 +82,9 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
         }
     }
 
-    private async Task<ApplicationUser> AtualizaSaldoUsuario(ApplicationUser user, ContaFinanceira contaFinanceira)
+    private async Task<ApplicationUser> AtualizaSaldoUsuario(ApplicationUser user, Lancamento contaFinanceira)
     {
-        if (contaFinanceira.TipoLancamento == ContaFinanceira.TiposLancamento.Credito)
+        if (contaFinanceira.TipoLancamento == Lancamento.TiposLancamento.Credito)
         {
             user.Saldo += contaFinanceira.ValorLancamento;
             return user;
