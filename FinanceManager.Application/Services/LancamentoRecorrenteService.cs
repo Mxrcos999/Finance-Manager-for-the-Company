@@ -1,5 +1,6 @@
 ﻿using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.Interfaces;
+using FinanceManager.Application.Interfaces.Repositorios;
 using FinanceManager.Domain.Factory;
 
 namespace FinanceManager.Application.Services;

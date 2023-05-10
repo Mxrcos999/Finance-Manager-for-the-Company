@@ -1,6 +1,7 @@
 ﻿using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
+using FinanceManager.Application.Interfaces.Repositorios;
 using FinanceManager.Domain.Entidades;
 using FinanceManager.Domain.Factory;
 

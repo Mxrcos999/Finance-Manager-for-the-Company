@@ -1,6 +1,7 @@
 ﻿
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
+using FinanceManager.Application.Interfaces.Repositorios;
 using FinanceManager.Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -56,7 +57,8 @@ public class CategoriaRep : ICategoriaRep
                                    Porcentagem = lancamentosPorCategoria
                  .Where(lp => lp.Categoria.Id == categoria.Id)
                  .Select(lp => lp.TotalValor / totalValorLancamentos * 100)
-                 .FirstOrDefault() };
+                 .FirstOrDefault()
+                               };
 
         return categoriaTratada.AsEnumerable();
     }
@@ -85,12 +87,17 @@ public class CategoriaRep : ICategoriaRep
 
     public async Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria)
     {
-        var categoria = await _categorias
-            .Where(wh => wh.Id == idCategoria && wh.UsuarioId == IdUsuarioLogado).SingleOrDefaultAsync();
+        using (_unitOfWork.BeginTransactionAsync())
+        {
+            var categoria = await _categorias
+               .Where(wh => wh.Id == idCategoria && wh.UsuarioId == IdUsuarioLogado).SingleOrDefaultAsync();
 
-        if (categoria is null)
-            return null;
+            if (categoria is null)
+                return null;
 
-        return categoria;
+            await _unitOfWork.CloseConnectionAsync();
+            return categoria;
+        }
+
     }
 }

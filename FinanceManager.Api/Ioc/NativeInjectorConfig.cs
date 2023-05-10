@@ -1,5 +1,6 @@
 ﻿using FinanceManager.Api.Extensions;
 using FinanceManager.Application.Interfaces;
+using FinanceManager.Application.Interfaces.Repositorios;
 using FinanceManager.Application.Services;
 using FinanceManager.Domain.Entidades;
 using FinanceManager.Identity.Configurations;
@@ -9,7 +10,6 @@ using FinanceManager.Infrastructure;
 using FinanceManager.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace FinanceManager.Api.Ioc
 {

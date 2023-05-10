@@ -35,7 +35,7 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
                        .AsNoTracking()
                        .Include(i => i.Categorias)
                        .Include(i => i.Usuario)
-                       .Where(historicoQuery.CreateFilterExpression())
+                       .Where(historicoQuery.CreateFilterExpression(IdUsuarioLogado))
                      orderby Contas.Datalancamento descending
                      select new ContaFinanceiraResponse()
                      {
@@ -69,6 +69,7 @@ public class ContaFinanceiraRep : IContaFinanceiraRepository
             _user.Update(userAtualizado);
             await _contaFinanceiras.AddAsync(contaFinanceira);
             var result = await _unitOfWork.CommitAsync();
+
             if (result)
                 return await ObtemContaFinanceira(new HistoricoQuery(new DateTime(2023, 05, 01), new DateTime(2023, 05, 31)));
 
