@@ -22,7 +22,7 @@ public class ContaFinanceiraController : Controller
 
     [HttpGet]
     [Route("api/historico")]
-    public async Task<IEnumerable<ContaFinanceiraResponse>> GetContaFinanceirasASync([FromQuery] DateTime dataHoraInicial, [FromQuery] DateTime dataHoraFinal)
+    public async Task<IEnumerable<ContaFinanceiraResponse>> GetContaFinanceirasASync([FromQuery] DateTime? dataHoraInicial, [FromQuery] DateTime? dataHoraFinal)
     {
         return await _contaFinanceiraService.ObterContasFinanceiras(new HistoricoQuery(dataHoraInicial, dataHoraFinal));
     }

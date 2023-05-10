@@ -6,18 +6,26 @@ namespace FinanceManager.Application.DTOs.DtoQuery;
 
 public sealed class HistoricoQuery
 {
-    public HistoricoQuery(DateTime dataHoraInicial, DateTime dataHoraFinal)
+    public HistoricoQuery(DateTime? dataHoraInicial, DateTime? dataHoraFinal)
     {
         DataHoraInicial = dataHoraInicial;
 
         DataHoraFinal = dataHoraFinal;
 
     }
-    public DateTime DataHoraInicial { get; set; }
-    public DateTime DataHoraFinal{ get; set; }
+    public DateTime? DataHoraInicial { get; set; }
+    public DateTime? DataHoraFinal{ get; set; }
 
-    public Expression<Func<ContaFinanceira, bool>> CreateFilterExpression()
+    public Expression<Func<ContaFinanceira, bool>> CreateFilterExpression(string? idUsuario = null)
     {
+        if (DataHoraInicial is null && DataHoraFinal is null)
+        {
+            var user = PredicateBuilder.True<ContaFinanceira>()
+              .And(p => p.UsuarioId == idUsuario);
+            return user;
+        }
+          
+
         var predicate = PredicateBuilder.True<ContaFinanceira>()
             .And(p => p.Datalancamento >= DataHoraInicial)
             .And(p => p.Datalancamento <= DataHoraFinal);
