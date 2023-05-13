@@ -15,13 +15,10 @@ namespace FinanceManager.Api.Controllers;
 public class LancamentoController : Controller
 {
     private readonly ILancamentoService _contaFinanceiraService;
-    private readonly UserManager<ApplicationUser> _userManager;
 
     public LancamentoController(ILancamentoService contaFinanceiraService, UserManager<ApplicationUser> userManager)
     {
         _contaFinanceiraService = contaFinanceiraService;
-        _userManager = userManager;
-
     }
 
     [HttpGet]
