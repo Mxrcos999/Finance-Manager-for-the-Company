@@ -1,6 +1,7 @@
 ﻿using FinanceManager.Application.DTOs.DtoQuery;
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
+using FinanceManager.Application.Interfaces.Repositorios;
 using FinanceManager.Domain.Entidades;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,7 @@ public class LancamentoRep : ILancamentoRep
     }
 
     public async Task<IEnumerable<LancamentoResponse>> ObtemContaFinanceira(HistoricoQuery historicoQuery)
-    {
+    {        
         var contas = from Contas in _contaFinanceiras
                        .AsNoTracking()
                        .Include(i => i.Categorias)

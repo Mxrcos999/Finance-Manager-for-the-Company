@@ -16,7 +16,7 @@ namespace FinanceManager.Api.Ioc
     public static class NativeInjectorConfig
     {
         public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
-        {
+        {   
             services.AddDbContext<FinanceManagerContext>(opts => opts.UseNpgsql(configuration.GetConnectionString("strConnection")));
             services.AddScoped<ILancamentoRep, LancamentoRep>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -28,6 +28,10 @@ namespace FinanceManager.Api.Ioc
             services.AddScoped<ILancamentoRecorrenteService, LancamentoRecorrenteService>();
             services.AddScoped<ICategoriaRep, CategoriaRep>();
             services.AddScoped<ICategoriaService, CategoriaService>();
+            services.AddScoped<IPessoaFisicaService, PessoaFisicaService>();
+            services.AddScoped<IPessoaFisicaRep, PessoaFisicaRep>();
+            services.AddScoped<IPessoaJuridicaRep, PessoaJuridicaRep>();
+            services.AddScoped<IPessoaJuridicaService, PessoaJuridicaService>();
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
            options.TokenLifespan = TimeSpan.FromHours(2));

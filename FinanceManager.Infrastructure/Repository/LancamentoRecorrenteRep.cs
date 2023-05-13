@@ -1,4 +1,5 @@
 ﻿using FinanceManager.Application.Interfaces;
+using FinanceManager.Application.Interfaces.Repositorios;
 using FinanceManager.Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
