@@ -19,6 +19,8 @@ public class PessoaJuridicaRep : IPessoaJuridicaRep
         _context = context;
         _user = context.Set<ApplicationUser>();
         _userManager = userManager;
+        IdUsuarioLogado = _context._httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
     }
     public async Task<PessoaJuridicaResponse> ObterAsync()
     {

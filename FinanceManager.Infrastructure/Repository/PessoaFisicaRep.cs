@@ -30,6 +30,7 @@ public class PessoaFisicaRep : IPessoaFisicaRep
                            .Where(wh => wh.Id == IdUsuarioLogado)
                            select new PessoaFisicaResponse()
                            {
+                               TipoUsuario = pessoa.TipoUsuario,
                                DataCriacaoConta = pessoa.PessoaFisica.DataHoraCadastro,
                                Nome = pessoa.PessoaFisica.Nome,
                                Email = pessoa.Email,
