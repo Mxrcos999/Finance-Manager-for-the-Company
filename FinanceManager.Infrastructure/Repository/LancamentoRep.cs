@@ -133,6 +133,8 @@ public class LancamentoRep : ILancamentoRep
         var userAtualizado = await AtualizaSaldoUsuario(user, lancamentoDeletar, true);
         _user.Update(userAtualizado);
         _lancamentos.Remove(lancamentoDeletar);
+        await _unitOfWork.CommitAsync();
+
     }
 
 

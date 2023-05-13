@@ -16,6 +16,7 @@ public class PessoaJuridica : Pessoa
         Cnpj = cnpj;
         FaturamentoMensal = faturamentoMensal;
         FaturamentoAnual = faturamentoAnual;
+        DataHoraCadastro = DateTime.Now.ToUniversalTime();
     }
     public PessoaJuridica()
     {

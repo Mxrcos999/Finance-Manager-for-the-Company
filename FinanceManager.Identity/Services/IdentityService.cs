@@ -63,7 +63,7 @@ public class IdentityService : IIdentityService
     public async Task<UserRegisterResponse> CadastrarUsuarioPessoaJuridica(UserPessoaJuridicaCadastroRequest userRegister)
     {
         var user = _mapper.Map<ApplicationUser>(userRegister);
-
+        user.TipoUsuario = TipoUsuario.PessoaJuridica;
         IdentityResult result = await _userManager.CreateAsync(user, userRegister.PessoaJuridica.Senha);
 
         UserRegisterResponse userRegisterResponse = new UserRegisterResponse(result.Succeeded);
@@ -111,6 +111,7 @@ public class IdentityService : IIdentityService
     public async Task<UserRegisterResponse> CadastrarUsuarioPessoaFisica(UserPessoaFisicaCadastroRequest userRegister)
     {
         var user = _mapper.Map<ApplicationUser>(userRegister);
+        user.TipoUsuario = TipoUsuario.PessoaFisica;
 
         IdentityResult result = await _userManager.CreateAsync(user, userRegister.PessoaFisica.Senha);
 

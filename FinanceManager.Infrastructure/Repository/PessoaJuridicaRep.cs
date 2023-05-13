@@ -22,16 +22,18 @@ public class PessoaJuridicaRep : IPessoaJuridicaRep
     }
     public async Task<PessoaJuridicaResponse> ObterAsync()
     {
-        var pessoa = await (from pessoaJuridica in _user
+        var pessoa = await (from pessoa in _user
                             .AsNoTracking()
                             .Include(i => i.PessoaJuridica)
                             .Where(wh => wh.Id == IdUsuarioLogado)
                             select new PessoaJuridicaResponse()
                             {
-                                RazaoSocial = pessoaJuridica.PessoaJuridica.RazaoSocial,
-                                DataAberturaEmpresa = pessoaJuridica.PessoaJuridica.DataAberturaEmpresa,
-                                Email = pessoaJuridica.Email,
-                                Saldo = pessoaJuridica.Saldo
+                                TipoUsuario = pessoa.TipoUsuario,
+                                RazaoSocial = pessoa.PessoaJuridica.RazaoSocial,
+                                DataAberturaEmpresa = pessoa.PessoaJuridica.DataAberturaEmpresa,
+                                DataCriacaoConta = pessoa.PessoaJuridica.DataHoraCadastro,
+                                Email = pessoa.Email,
+                                Saldo = pessoa.Saldo
                             }).SingleOrDefaultAsync();
         return pessoa;
     }

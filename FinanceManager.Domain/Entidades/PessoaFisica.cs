@@ -20,6 +20,7 @@ public class PessoaFisica : Pessoa
         DataNascimento = dataNascimento;
         Empregador = empregador;
         Nome = nome;
+        DataHoraCadastro = DateTime.Now.ToUniversalTime();
     }
     public PessoaFisica() { }
   
