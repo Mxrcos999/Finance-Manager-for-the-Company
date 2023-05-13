@@ -22,7 +22,7 @@ public class PessoaJuridicaRep : IPessoaJuridicaRep
     }
     public async Task<PessoaJuridicaResponse> ObterAsync()
     {
-        var pessoa = await (from pessoa in _user
+        var pessoaJuridica = await (from pessoa in _user
                             .AsNoTracking()
                             .Include(i => i.PessoaJuridica)
                             .Where(wh => wh.Id == IdUsuarioLogado)
@@ -35,6 +35,6 @@ public class PessoaJuridicaRep : IPessoaJuridicaRep
                                 Email = pessoa.Email,
                                 Saldo = pessoa.Saldo
                             }).SingleOrDefaultAsync();
-        return pessoa;
+        return pessoaJuridica;
     }
 }
