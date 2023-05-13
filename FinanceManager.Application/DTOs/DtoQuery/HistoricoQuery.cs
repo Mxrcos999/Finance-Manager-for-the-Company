@@ -6,31 +6,40 @@ namespace FinanceManager.Application.DTOs.DtoQuery;
 
 public sealed class HistoricoQuery
 {
-    public HistoricoQuery(DateTime? dataHoraInicial, DateTime? dataHoraFinal)
+    public HistoricoQuery(DateTime? dataHoraInicial = null, DateTime? dataHoraFinal = null, int? id = null)
     {
         DataHoraInicial = dataHoraInicial;
-
+        Id = id;
         DataHoraFinal = dataHoraFinal;
 
     }
     public DateTime? DataHoraInicial { get; set; }
-    public DateTime? DataHoraFinal{ get; set; }
+    public DateTime? DataHoraFinal { get; set; }
+    public int? Id { get; set; }
 
     public Expression<Func<Lancamento, bool>> CreateFilterExpression(string? idUsuario = null)
     {
-        if (DataHoraInicial is null && DataHoraFinal is null)
-        {
-            var user = PredicateBuilder.True<Lancamento>()
-                .And(p => p.UsuarioId == idUsuario);
-                    
-            return user;
-        }
-
 
         var predicate = PredicateBuilder.True<Lancamento>()
-             .And(p => p.UsuarioId == idUsuario)
-            .And(p => p.Datalancamento >= DataHoraInicial)
-            .And(p => p.Datalancamento <= DataHoraFinal);
+            .And(p => p.UsuarioId == idUsuario);
+
+
+
+        if (DataHoraFinal.HasValue)
+        {
+            predicate = predicate.And(p => p.Datalancamento >= DataHoraInicial.Value);
+        }
+
+        if (DataHoraFinal.HasValue)
+        {
+            predicate = predicate.And(p => p.Datalancamento <= DataHoraFinal.Value);
+        }  
+        
+        if (Id is not null)
+        {
+            predicate = predicate.And(p => p.Id == Id);
+        }
+     
 
         return predicate;
     }

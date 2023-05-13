@@ -90,6 +90,7 @@ public class CategoriaRep : ICategoriaRep
         using (_unitOfWork.BeginTransactionAsync())
         {
             var categoria = await _categorias
+                .Include(i => i.Lancamento)
                .Where(wh => wh.Id == idCategoria && wh.UsuarioId == IdUsuarioLogado).SingleOrDefaultAsync();
 
             if (categoria is null)

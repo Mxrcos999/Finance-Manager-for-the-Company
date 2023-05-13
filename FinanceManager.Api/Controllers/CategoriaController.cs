@@ -22,13 +22,13 @@ public class CategoriaController : Controller
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CategoriaResponse>> GetCategoriaAsync()
+    public async Task<IEnumerable<CategoriaResponse>> ObterAsync()
     {
         return await _categoriaService.ObterAsync();
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostCategoriaAsync([FromBody] CategoriaCadastroRequest categoria)
+    public async Task<IActionResult> IncluirAsync([FromBody] CategoriaCadastroRequest categoria)
     {
         var result = await _categoriaService.IncluirAsync(categoria);
 
@@ -39,9 +39,9 @@ public class CategoriaController : Controller
     }
 
     [HttpGet("id")]
-    public async Task<Categoria> GetCategoriaByIdAsync(int id)
+    public async Task<Categoria> ObterByIdAsync(int id)
     {
-        return await _categoriaService.ObterCategoriaByIdAsync(id);
+        return await _categoriaService.ObterByIdAsync(id);
 
     }
 

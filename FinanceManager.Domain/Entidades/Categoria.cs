@@ -9,7 +9,7 @@ public class Categoria : EntidadeBase
     public string Descricao { get; private set; }
     public string Tipo { get; private set; }
     public int ContaFinanceiraId { get;  set; }
-    public ICollection<Lancamento> ContaFinanceira { get;  set; }
+    public ICollection<Lancamento> Lancamento { get;  set; }
     public string UsuarioId { get; set; }
     public ApplicationUser Usuario { get; set; }
     public Categoria() {}

@@ -24,6 +24,14 @@ public class Lancamento : EntidadeBase
         DataHoraCadastro = DateTime.Now.ToUniversalTime();
         TituloLancamento = tituloLancamento;
     }
+
+    public void Alterar(decimal valorLancamento, TiposLancamento tipoLancamento, Categoria categoria, string tituloLancamento)
+    {
+        ValorLancamento = valorLancamento;
+        TipoLancamento = tipoLancamento;
+        Categorias = categoria;
+        TituloLancamento = tituloLancamento;
+    }
     public enum TiposLancamento
     {
         Credito,

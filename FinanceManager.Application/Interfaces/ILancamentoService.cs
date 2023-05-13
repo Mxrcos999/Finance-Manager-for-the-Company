@@ -1,13 +1,14 @@
 ﻿using FinanceManager.Application.DTOs.DtoQuery;
 using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
-using FinanceManager.Domain;
-using FinanceManager.Domain.Entidades;
+using FinanceManager.Application.DTOs.DtosUpdate;
 
 namespace FinanceManager.Application.Interfaces;
 
 public interface ILancamentoService
 {
-    Task<IEnumerable<LancamentoResponse>> IncluirContaFinanceira(LancamentoCadastroRequest contaFinanceira);
-    Task<IEnumerable<LancamentoResponse>> ObterContasFinanceiras(HistoricoQuery historicoQuery);
+    Task<IEnumerable<LancamentoResponse>> IncluirAsync(LancamentoCadastroRequest lancamento);
+    Task<IEnumerable<LancamentoResponse>> AlterarAsync(LancamentoUpdateRequest lancamento);
+    Task DeletarAsync(int[] ids);
+    Task<IEnumerable<LancamentoResponse>> ObterAsync(HistoricoQuery historicoQuery);
 }

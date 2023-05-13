@@ -10,5 +10,5 @@ public interface ICategoriaService
 {
     Task<IEnumerable<CategoriaResponse>> IncluirAsync(CategoriaCadastroRequest categoria);
     Task<IEnumerable<CategoriaResponse>> ObterAsync();
-    Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria);
+    Task<Categoria> ObterByIdAsync(int? idCategoria);
 }

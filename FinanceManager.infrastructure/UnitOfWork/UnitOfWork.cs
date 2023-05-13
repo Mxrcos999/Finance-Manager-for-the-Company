@@ -1,5 +1,6 @@
 ﻿using FinanceManager.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace FinanceManager.Infrastructure;
 
@@ -28,9 +29,9 @@ public class UnitOfWork : IUnitOfWork
         await _context.Database.GetDbConnection().CloseAsync();
     }
 
-    public async Task BeginTransactionAsync()
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
     {
-        await _context.Database.BeginTransactionAsync();
+        return await _context.Database.BeginTransactionAsync();
     }
 
     public async Task RollbackTransactionAsync()

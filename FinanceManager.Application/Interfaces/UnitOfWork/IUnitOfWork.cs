@@ -1,4 +1,6 @@
-﻿namespace FinanceManager.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace FinanceManager.Application.Interfaces;
 
 public interface IUnitOfWork : IDisposable
 {
@@ -6,6 +8,6 @@ public interface IUnitOfWork : IDisposable
     Task RollbackAsync();
     Task OpenConnectionAsync();
     Task CloseConnectionAsync();
-    Task BeginTransactionAsync();
+    Task<IDbContextTransaction> BeginTransactionAsync();
     Task RollbackTransactionAsync();
 }

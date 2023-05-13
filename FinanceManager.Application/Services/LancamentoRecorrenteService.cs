@@ -40,6 +40,6 @@ public class LancamentoRecorrenteService : ILancamentoRecorrenteService
             lancamentoRecorrente.TituloLancamentoRecorrente);
 
         await _lancamentoRecorrenteRep.IncluirAsync(lancamentoRecorrente);
-        await _contaFinanceiraRepository.IncluirContaFinanceiraAsync(contaFinanceira);
+        await _contaFinanceiraRepository.IncluirAsync(contaFinanceira);
     }
 }

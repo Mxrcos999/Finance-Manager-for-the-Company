@@ -34,7 +34,7 @@ public class CategoriaService : ICategoriaService
         return categoriasAtualizadas;
     }
 
-    public async Task<Categoria> ObterCategoriaByIdAsync(int? idCategoria)
+    public async Task<Categoria> ObterByIdAsync(int? idCategoria)
     {
         var categoria = await _categoriaRep.ObterCategoriaByIdAsync(idCategoria);
 
