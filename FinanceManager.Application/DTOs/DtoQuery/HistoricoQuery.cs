@@ -13,7 +13,6 @@ public sealed class HistoricoQuery
         DataHoraFinal = dataHoraFinal;
 
     }
-    public string? UsuarioId { get; set; }
     public DateTime? DataHoraInicial { get; set; }
     public DateTime? DataHoraFinal{ get; set; }
 
@@ -25,7 +24,6 @@ public sealed class HistoricoQuery
                 .And(p => p.UsuarioId == idUsuario);
                     
             return user;
-
         }
 
 
