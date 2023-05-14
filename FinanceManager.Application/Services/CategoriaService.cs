@@ -1,5 +1,6 @@
 ﻿using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
+using FinanceManager.Application.DTOs.DtosUpdate;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Application.Interfaces.Repositorios;
 using FinanceManager.Domain.Entidades;
@@ -20,6 +21,7 @@ public class CategoriaService : ICategoriaService
     {
         return await _categoriaRep.ObterAsync();
     }
+
     public async Task<IEnumerable<CategoriaResponse>> IncluirAsync(CategoriaCadastroRequest categoria)
     {
         var categoriaInserir = CategoriaFactory.
@@ -42,5 +44,14 @@ public class CategoriaService : ICategoriaService
             throw new Exception("Categoria não encontrada");
 
         return categoria;
+    }
+
+    public async Task<IEnumerable<CategoriaResponse>> AlterarAsync(CategoriaUpdateRequest categoria)
+    {
+        var categoriaObtida = await _categoriaRep.ObterCategoriaByIdAsync(categoria.Id);
+
+        categoriaObtida.Alterar(categoria.Nome, categoria.Descricao, categoria.Tipo.ToString());
+
+        return await _categoriaRep.AlterarAsync(categoriaObtida);
     }
 }

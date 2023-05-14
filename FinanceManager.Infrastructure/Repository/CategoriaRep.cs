@@ -1,5 +1,4 @@
-﻿
-using FinanceManager.Application.DTOs.DtosResponse;
+﻿using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Application.Interfaces.Repositorios;
 using FinanceManager.Domain.Entidades;
@@ -100,5 +99,29 @@ public class CategoriaRep : ICategoriaRep
             return categoria;
         }
 
+    }
+
+    public async Task<IEnumerable<CategoriaResponse>> AlterarAsync(Categoria categoria)
+    {
+        try
+        {
+            using (var transaction = await _unitOfWork.BeginTransactionAsync())
+            {
+                _categorias.Update(categoria);
+
+                await transaction.CommitAsync();
+
+                var result = await _unitOfWork.CommitAsync();
+                if (result)
+                    return await ObterAsync();
+                return null;
+
+            }
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 }

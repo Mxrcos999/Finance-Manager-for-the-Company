@@ -21,6 +21,13 @@ public class Categoria : EntidadeBase
         Tipo = tipo;
         DataHoraCadastro = DateTime.Now.ToUniversalTime();
     }
+
+    public void Alterar(string nome, string descricao, string tipo)
+    {
+        Nome = nome;
+        Descricao  = descricao;
+        Tipo = tipo;
+    }
     public enum TipoCategoria
     {
         Entrada,

@@ -1,5 +1,6 @@
 ﻿using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
+using FinanceManager.Application.DTOs.DtosUpdate;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Domain.Entidades;
 using Microsoft.AspNetCore.Authorization;
@@ -44,5 +45,16 @@ public class CategoriaController : Controller
         return await _categoriaService.ObterByIdAsync(id);
 
     }
+
+    [HttpPut]
+    public async Task<IActionResult> AlterarAsync([FromBody] CategoriaUpdateRequest categoria)
+    {
+         var categorias = await _categoriaService.AlterarAsync(categoria);
+
+        if(categorias is null)
+            return BadRequest();
+        
+        return Ok(categorias);
+    }  
 
 }
