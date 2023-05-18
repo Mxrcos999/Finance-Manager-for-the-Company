@@ -11,8 +11,10 @@ namespace FinanceManager.Api.Controllers;
 public class AthenaController : Controller
 {
     [HttpPost]
-    public async Task EnviaMensagemAsync(ChatAthenaCadastroRequest model)
+    public async Task<IActionResult> EnviaMensagemAsync(ChatAthenaCadastroRequest model)
     {
-        await OpenAiService.EnviaMensagem(model);
+        var result = await OpenAiService.EnviaMensagem(model);
+
+        return Ok(result.Choices.SingleOrDefault().Text);
     }
 }

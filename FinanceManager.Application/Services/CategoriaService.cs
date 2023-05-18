@@ -27,7 +27,8 @@ public class CategoriaService : ICategoriaService
         var categoriaInserir = CategoriaFactory.
             Create(categoria.Nome,
             categoria.Descricao,
-            categoria.Tipo.ToString());
+            categoria.Tipo.ToString(),
+            categoria.ColorCode);
 
         var categoriasAtualizadas = await _categoriaRep.IncluirAsync(categoriaInserir);
 
@@ -50,7 +51,7 @@ public class CategoriaService : ICategoriaService
     {
         var categoriaObtida = await _categoriaRep.ObterCategoriaByIdAsync(categoria.Id);
 
-        categoriaObtida.Alterar(categoria.Nome, categoria.Descricao, categoria.Tipo.ToString());
+        categoriaObtida.Alterar(categoria.Nome, categoria.Descricao, categoria.Tipo.ToString(), categoria.ColorCode);
 
         return await _categoriaRep.AlterarAsync(categoriaObtida);
     }

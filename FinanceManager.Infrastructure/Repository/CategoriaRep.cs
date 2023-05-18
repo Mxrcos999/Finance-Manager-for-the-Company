@@ -53,6 +53,7 @@ public class CategoriaRep : ICategoriaRep
                                    Nome = categoria.Nome,
                                    Descricao = categoria.Descricao,
                                    TipoCategoria = categoria.Tipo.ToString(),
+                                   ColorCode = categoria.ColorCode,
                                    Porcentagem = lancamentosPorCategoria
                  .Where(lp => lp.Categoria.Id == categoria.Id)
                  .Select(lp => lp.TotalValor / totalValorLancamentos * 100)
