@@ -17,23 +17,33 @@ namespace FinanceManager.Api.Ioc
     {
         public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<FinanceManagerContext>(opts => opts.UseNpgsql(configuration.GetConnectionString("strConnection")));
-            services.AddScoped<IContaFinanceiraRepository, ContaFinanceiraRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            // Repositório
+            services.AddScoped<IContaFinanceiraRepository, ContaFinanceiraRep>();
+
+            // Service
             services.AddScoped<IIdentityService, IdentityService>();
-            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IContaFinanceiraService, ContaFinanceiraService>();
+
+            // Factory
             services.AddScoped<IContaFinanceiraFactory, ContaFinanceiraFactory>();
 
+            //Email
+            services.AddScoped<IEmailSender, EmailSender>();
+
+            // Configuração Email
             services.Configure<DataProtectionTokenProviderOptions>(options =>
            options.TokenLifespan = TimeSpan.FromHours(2));
             services.Configure<EmailSenderOptions>(configuration.GetSection("EmailSenderOptions"));
-
-
             services.Configure<DataProtectionTokenProviderOptions>("EmailConfirmation", options =>
             {
                 options.TokenLifespan = TimeSpan.FromHours(2);
             });
+
+            // Configuração Conexão
+            services.AddDbContext<FinanceManagerContext>(opts => opts.UseNpgsql(configuration.GetConnectionString("strConnection")));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //Cors 
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", builder =>
@@ -43,16 +53,25 @@ namespace FinanceManager.Api.Ioc
                         .AllowAnyHeader();
                 });
             });
+
+            // Autorização
+            services.AddAuthorizationPolicies();
+
+            // Indentificador e Autenticador
+            services.AddAuthentication(configuration);
             services.AddIdentity<ApplicationUser, IdentityRole>()
            .AddDefaultUI()
            .AddEntityFrameworkStores<FinanceManagerContext>()
+
+           //Maneger
            .AddUserManager<UserManager<ApplicationUser>>()
            .AddSignInManager<SignInManager<ApplicationUser>>()
+
+           // Token 
            .AddDefaultTokenProviders()
            .AddTokenProvider("Default", typeof(EmailConfirmationTokenProvider<ApplicationUser>));
 
-            services.AddAuthentication(configuration);
-            services.AddAuthorizationPolicies();
+            
         }
     }
 }
