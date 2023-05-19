@@ -11,7 +11,7 @@ using FinanceManager.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinanceManager.Api.Ioc
+namespace FinanceManager.Api.Iocgit
 {
     public static class NativeInjectorConfig
     {
