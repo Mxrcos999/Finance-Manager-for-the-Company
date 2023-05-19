@@ -3,12 +3,4 @@
 public class UserPessoaFisicaCadastroRequest
 {
     public PessoaFisicaCadastroRequest PessoaFisica { get; set; }
-
-
-
-    public enum TipoUsuarioEnum
-    {
-        PessoaFisica,
-        PessoaJuridica
-    }
 }

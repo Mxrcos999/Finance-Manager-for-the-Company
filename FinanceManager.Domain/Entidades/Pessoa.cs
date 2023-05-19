@@ -14,7 +14,7 @@ public abstract class Pessoa
         Enderecos = enderecos;
         Telefones = telefones;
         Email = email;
-
+        DataHoraCadastro = DateTime.Now.ToUniversalTime();
     }
     public Pessoa()
     {

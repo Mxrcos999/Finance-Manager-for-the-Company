@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FinanceManager.Domain.Entidades;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinanceManager.Application.DTOs.DtosCadastro;
 
@@ -12,4 +13,5 @@ public class PessoaCadastroRequest
     [Required(ErrorMessage = "O campo confirmar senha é obrigatório.")]
     [Compare("Senha", ErrorMessage = "As senhas não são iguais.")]
     public string ConfirmaSenha { get; set; }
+
 }

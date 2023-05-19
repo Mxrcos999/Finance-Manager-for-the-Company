@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FinanceManager.Infrastructure.Mapeamento;
 
-public class ContaFinanceiraMap : IEntityTypeConfiguration<ContaFinanceira>
+public class LancamentoMap : IEntityTypeConfiguration<Lancamento>
 {
-    public void Configure(EntityTypeBuilder<ContaFinanceira> builder)
+    public void Configure(EntityTypeBuilder<Lancamento> builder)
     {
         builder
              .HasOne(o => o.Usuario)

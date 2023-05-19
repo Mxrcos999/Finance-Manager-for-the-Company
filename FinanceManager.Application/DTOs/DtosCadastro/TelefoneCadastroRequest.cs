@@ -6,7 +6,6 @@ public sealed class TelefoneCadastroRequest
 {
     [Required(ErrorMessage = "O campo DDD deve ser informado.")]
     [MaxLength(3, ErrorMessage = "O campo DDI deve conter até 3 caracteres")]
-
     public string Ddd { get; set; }
     [Required(ErrorMessage = "O campo DDI deve ser informado.")]
     [StringLength(3, ErrorMessage = "O campo DDI deve conter 3 caracteres")]
