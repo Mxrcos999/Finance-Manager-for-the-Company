@@ -33,6 +33,7 @@ namespace FinanceManager.Api.Ioc
             services.AddScoped<IPessoaJuridicaRep, PessoaJuridicaRep>();
             services.AddScoped<IPessoaJuridicaService, PessoaJuridicaService>();
 
+
             services.Configure<DataProtectionTokenProviderOptions>(options =>
            options.TokenLifespan = TimeSpan.FromHours(2));
             services.Configure<EmailSenderOptions>(configuration.GetSection("EmailSenderOptions"));
