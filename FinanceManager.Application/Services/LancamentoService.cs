@@ -55,7 +55,7 @@ public class LancamentoService : ILancamentoService
         return await _lancamentoRep.AlterarAsync(lancamentoAlterar);
     }
 
-    public async Task DeletarAsync(int[] ids)
+    public async Task<IEnumerable<LancamentoResponse>> DeletarAsync(int[] ids)
     {
         if(!ids.Any())
             throw new DataException("Deve ser informado um Id", new Exception("Deve ser informado um Id"));
@@ -64,6 +64,9 @@ public class LancamentoService : ILancamentoService
         {
             await _lancamentoRep.DeletarLancamento(idAtual);
         }
+
+        var lancamentos = await _lancamentoRep.ObterAsync(new HistoricoQuery());
+        return lancamentos;
     }
 }
 

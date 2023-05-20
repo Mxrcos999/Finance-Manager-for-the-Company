@@ -9,6 +9,6 @@ public interface ILancamentoService
 {
     Task<IEnumerable<LancamentoResponse>> IncluirAsync(LancamentoCadastroRequest lancamento);
     Task<IEnumerable<LancamentoResponse>> AlterarAsync(LancamentoUpdateRequest lancamento);
-    Task DeletarAsync(int[] ids);
+    Task<IEnumerable<LancamentoResponse>> DeletarAsync(int[] ids);
     Task<IEnumerable<LancamentoResponse>> ObterAsync(HistoricoQuery historicoQuery);
 }
