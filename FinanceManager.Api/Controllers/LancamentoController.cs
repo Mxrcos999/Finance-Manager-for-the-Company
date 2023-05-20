@@ -56,8 +56,8 @@ public class LancamentoController : Controller
     [Route("api/historico/lancamento")]
     public async Task<IActionResult> DeletarAsync([FromBody] int[] ids)
     {
-        await _lancamentoService.DeletarAsync(ids);
+        var result = await _lancamentoService.DeletarAsync(ids);
 
-        return Ok();
+        return Ok(result);
     }
 }
