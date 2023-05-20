@@ -6,7 +6,7 @@ namespace FinanceManager.ServicosExternos.Servicos;
 
 public static class OpenAiService
 {
-    private static readonly string _apiKey = "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";
+    private static readonly string _apiKey = "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";
     private static readonly string _url = "/v1/engines/text-davinci-003/completions";
     public static async Task<Root> EnviaMensagem(ChatAthenaCadastroRequest model)
     {

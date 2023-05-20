@@ -18,23 +18,33 @@ public class IdentityService : IIdentityService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JwtOptions _jwtOptions;
+    private readonly ILancamentoRecorrenteService _lancamentoRecorrenteService;
     private readonly IEmailSender _emailSender;
     private readonly IMapper _mapper;
 
-    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, IMapper mapper, IEmailSender emailSender)
+    public IdentityService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtOptions> jwtOptions, IMapper mapper, IEmailSender emailSender, ILancamentoRecorrenteService lancamentoRecorrenteService)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _jwtOptions = jwtOptions.Value;
         _mapper = mapper;
         _emailSender = emailSender;
+        _lancamentoRecorrenteService = lancamentoRecorrenteService;
     }
 
     public async Task<UserLoginResponse> LoginAsync(UserLoginRequest userLogin)
     {
         SignInResult signInResult = await _signInManager.PasswordSignInAsync(userLogin.Email, userLogin.Password, isPersistent: false, lockoutOnFailure: true);
         if (signInResult.Succeeded)
-            return await GerarCredenciais(userLogin.Email);
+        {
+            var credenciais = await GerarCredenciais(userLogin.Email);
+            var userId = (await _userManager.FindByEmailAsync(userLogin.Email)).Id;
+            var result = await _lancamentoRecorrenteService.VerificaAgendamentoLancamento(userId);
+            credenciais.Dados = result.Dados;
+
+            return credenciais;
+        }
+
 
 
         UserLoginResponse userLoginResponse = new UserLoginResponse(signInResult.Succeeded);

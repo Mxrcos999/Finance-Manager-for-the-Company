@@ -20,7 +20,7 @@ public class LancamentoRecorrenteController : Controller
 
     [HttpPost]
     [Route("api/lancamento-recorrente")]
-    public async Task<IActionResult> PostLancamentoRecorrente(LancamentoRecorrenteCadastroRequest model)
+    public async Task<IActionResult> PostLancamentoRecorrente([FromBody] LancamentoRecorrenteCadastroRequest model)
     {
         if(!ModelState.IsValid)
             return StatusCode(StatusCodes.Status400BadRequest);

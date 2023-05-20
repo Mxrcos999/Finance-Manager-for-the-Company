@@ -14,6 +14,7 @@ public class UserLoginResponse
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string RefreshToken { get; private set; }
+    public IEnumerable<object> Dados { get; set; }
 
     public List<string> Errors { get; private set; }
 

@@ -15,6 +15,6 @@ public class AthenaController : Controller
     {
         var result = await OpenAiService.EnviaMensagem(model);
 
-        return Ok(result.Choices.SingleOrDefault().Text);
+        return Ok(result.Choices);
     }
 }

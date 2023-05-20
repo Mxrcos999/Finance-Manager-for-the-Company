@@ -15,10 +15,11 @@ public class LancamentoRecorrente : EntidadeBase
     public Categoria Categoria { get; private set; }
     //Constructor para ef core
     public LancamentoRecorrente() {}
-    public LancamentoRecorrente(decimal valorLancamento, DateTime dataPrevistaLancamentoRecorrente, 
+    public LancamentoRecorrente(decimal valorLancamento,string tituloLancamento, DateTime dataPrevistaLancamentoRecorrente, 
         TiposLancamento tipoLancamento, Categoria categoria)
     {
         ValorLancamento = valorLancamento;
+        TituloLancamentoRecorrente = tituloLancamento;
         DataPrevistaLancamento = dataPrevistaLancamentoRecorrente;
         TipoLancamento = tipoLancamento;
         Categoria = categoria;
