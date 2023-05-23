@@ -32,7 +32,12 @@ public class LancamentoService : ILancamentoService
         if (categoriaObtida is null)
             throw new DataException("Não foi encontrada nenhuma categoria com o id informado", new Exception("Não foi encontrada nenhuma categoria com o id informado"));
 
-        var lancamentoInserir = LancamentoFactory.Create(lancamento.ValorLancamento, lancamento.TipoLancamento, categoriaObtida, lancamento.TituloLancamento);
+        var lancamentoInserir = LancamentoFactory.Create
+            (lancamento.ValorLancamento, 
+            lancamento.TipoLancamento,
+            categoriaObtida,
+            lancamento.TituloLancamento,
+            lancamento.DataLancamento);
 
         var historicoAtualizado = await _lancamentoRep.IncluirAsync(lancamentoInserir);
 

@@ -1,4 +1,5 @@
-﻿using FinanceManager.Application.DTOs.DtosCadastro;
+﻿using FinanceManager.Application.DTOs.DtoQuery;
+using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.DTOs.DtosUpdate;
 using FinanceManager.Application.Interfaces;
@@ -23,9 +24,9 @@ public class CategoriaController : Controller
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CategoriaResponse>> ObterAsync()
+    public async Task<IEnumerable<CategoriaResponse>> ObterAsync([FromQuery] DateTime? dataInicial,[FromQuery] DateTime? dataFinal)
     {
-        return await _categoriaService.ObterAsync();
+        return await _categoriaService.ObterAsync(new HistoricoQuery(dataInicial, dataFinal));
     }
 
     [HttpPost]

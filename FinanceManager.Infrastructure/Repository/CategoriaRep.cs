@@ -1,4 +1,5 @@
-﻿using FinanceManager.Application.DTOs.DtosResponse;
+﻿using FinanceManager.Application.DTOs.DtoQuery;
+using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.Interfaces;
 using FinanceManager.Application.Interfaces.Repositorios;
 using FinanceManager.Domain.Entidades;
@@ -27,10 +28,10 @@ public class CategoriaRep : ICategoriaRep
 
     }
 
-    public async Task<IEnumerable<CategoriaResponse>> ObterAsync()
+    public async Task<IEnumerable<CategoriaResponse>> ObterAsync(HistoricoQuery historicoQuery)
     {
         var lancamentosPorCategoria = _lancamentos
-          .Where(l => l.UsuarioId == IdUsuarioLogado)
+          .Where(historicoQuery.CreateFilterExpression(IdUsuarioLogado))
           .GroupBy(l => l.Categorias)
           .Select(g => new
           {
@@ -39,7 +40,7 @@ public class CategoriaRep : ICategoriaRep
           });
 
         decimal totalValorLancamentos = _lancamentos
-            .Where(l => l.UsuarioId == IdUsuarioLogado)
+            .Where(historicoQuery.CreateFilterExpression(IdUsuarioLogado))
             .Sum(l => l.ValorLancamento);
 
 
@@ -73,7 +74,7 @@ public class CategoriaRep : ICategoriaRep
             var result = await _unitOfWork.CommitAsync();
 
             if (result)
-                return await ObterAsync();
+                return await ObterAsync(new HistoricoQuery());
             return null;
         }
         catch (Exception)
@@ -114,7 +115,7 @@ public class CategoriaRep : ICategoriaRep
 
                 var result = await _unitOfWork.CommitAsync();
                 if (result)
-                    return await ObterAsync();
+                    return await ObterAsync(new HistoricoQuery());
                 return null;
 
             }

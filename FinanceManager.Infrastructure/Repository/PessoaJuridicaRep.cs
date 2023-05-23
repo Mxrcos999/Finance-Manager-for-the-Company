@@ -11,14 +11,12 @@ public class PessoaJuridicaRep : IPessoaJuridicaRep
 {
     private readonly FinanceManagerContext _context;
     private readonly DbSet<ApplicationUser> _user;
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly string IdUsuarioLogado;
 
-    public PessoaJuridicaRep(FinanceManagerContext context, UserManager<ApplicationUser> userManager)
+    public PessoaJuridicaRep(FinanceManagerContext context)
     {
         _context = context;
         _user = context.Set<ApplicationUser>();
-        _userManager = userManager;
         IdUsuarioLogado = _context._httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
     }
@@ -32,6 +30,7 @@ public class PessoaJuridicaRep : IPessoaJuridicaRep
                             {
                                 TipoUsuario = pessoa.TipoUsuario,
                                 RazaoSocial = pessoa.PessoaJuridica.RazaoSocial,
+                                Cnpj = pessoa.PessoaJuridica.Cnpj,
                                 DataAberturaEmpresa = pessoa.PessoaJuridica.DataAberturaEmpresa,
                                 DataCriacaoConta = pessoa.PessoaJuridica.DataHoraCadastro,
                                 Email = pessoa.Email,

@@ -1,5 +1,6 @@
 ﻿
 
+using FinanceManager.Application.DTOs.DtoQuery;
 using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.DTOs.DtosUpdate;
@@ -11,6 +12,6 @@ public interface ICategoriaService
 {
     Task<IEnumerable<CategoriaResponse>> IncluirAsync(CategoriaCadastroRequest categoria);
     Task<IEnumerable<CategoriaResponse>> AlterarAsync(CategoriaUpdateRequest categoria);
-    Task<IEnumerable<CategoriaResponse>> ObterAsync();
+    Task<IEnumerable<CategoriaResponse>> ObterAsync(HistoricoQuery historicoQuery);
     Task<Categoria> ObterByIdAsync(int? idCategoria);
 }

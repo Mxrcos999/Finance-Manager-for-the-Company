@@ -47,6 +47,7 @@ public class LancamentoRep : ILancamentoRep
                      select new LancamentoResponse()
                      {
                          Id = Contas.Id,
+                         TituloLancamento = Contas.TituloLancamento,
                          SaldoAtual = Contas.Usuario.Saldo,
                          Datalancamento = Contas.Datalancamento,
                          TipoLancamento = Contas.TipoLancamento,

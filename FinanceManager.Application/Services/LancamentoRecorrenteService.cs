@@ -42,7 +42,8 @@ public class LancamentoRecorrenteService : ILancamentoRecorrenteService
                     (lancamentoRecorrenteInserir.ValorLancamento,
                     lancamentoRecorrenteInserir.TipoLancamento,
                     lancamentoRecorrenteInserir.Categoria,
-                    lancamentoRecorrenteInserir.TituloLancamentoRecorrente);
+                    lancamentoRecorrenteInserir.TituloLancamentoRecorrente,
+                    lancamentoRecorrenteInserir.DataPrevistaLancamento);
 
             await _lancamentoRep.IncluirAsync(lancamentoInseir);
         }

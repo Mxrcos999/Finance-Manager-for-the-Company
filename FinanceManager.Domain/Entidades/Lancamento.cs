@@ -14,12 +14,12 @@ public class Lancamento : EntidadeBase
     public Categoria? Categorias { get; set; }
 
     public Lancamento() { }
-    public Lancamento(decimal valorLancamento, TiposLancamento tipoLancamento, Categoria categoria, string tituloLancamento)
+    public Lancamento(decimal valorLancamento, TiposLancamento tipoLancamento, Categoria categoria, string tituloLancamento, DateTime dataLancamento)
     {
 
         ValorLancamento = valorLancamento;
         TipoLancamento = tipoLancamento;
-        Datalancamento = DateTime.Now.ToUniversalTime();
+        Datalancamento = dataLancamento;
         Categorias = categoria;
         DataHoraCadastro = DateTime.Now.ToUniversalTime();
         TituloLancamento = tituloLancamento;

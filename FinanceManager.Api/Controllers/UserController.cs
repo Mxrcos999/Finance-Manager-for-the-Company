@@ -10,11 +10,9 @@ namespace FinanceManager.Api.Controllers
     public class UserController : Controller
     {
         private readonly IIdentityService _identityService;
-        private readonly IEmailSender _emailSender;
-        public UserController(IIdentityService identityService, IEmailSender emailSender)
+        public UserController(IIdentityService identityService)
         {
             _identityService = identityService;
-            _emailSender = emailSender;
         }
 
         [HttpPost]

@@ -6,7 +6,8 @@ namespace FinanceManager.Application.DTOs.DtosCadastro;
 public sealed class LancamentoCadastroRequest
 {
     [Required(ErrorMessage = "O titulo do lançamento deve ser informado")]
-    public string TituloLancamento { get; set; }
+    public string TituloLancamento { get; set; }   
+    public DateTime DataLancamento { get; set; }
     
     [Range(1, Double.PositiveInfinity, ErrorMessage = "O valor de lançamento deve ser maior que 0")]
     public decimal ValorLancamento { get; set; }

@@ -111,5 +111,5 @@ public struct Cpf
         return new Cpf(value);
     }
 
-    public string FormatedCpf => Convert.ToInt64(_value).ToString(@"000\.000\.000\-00");
+    public string? FormatedCpf => Convert.ToInt64(_value).ToString(@"000\.000\.000\-00");
 }

@@ -1,4 +1,5 @@
-﻿using FinanceManager.Application.DTOs.DtosCadastro;
+﻿using FinanceManager.Application.DTOs.DtoQuery;
+using FinanceManager.Application.DTOs.DtosCadastro;
 using FinanceManager.Application.DTOs.DtosResponse;
 using FinanceManager.Application.DTOs.DtosUpdate;
 using FinanceManager.Application.Interfaces;
@@ -17,9 +18,9 @@ public class CategoriaService : ICategoriaService
         _categoriaRep = categoriaRep;
     }
 
-    public async Task<IEnumerable<CategoriaResponse>> ObterAsync()
+    public async Task<IEnumerable<CategoriaResponse>> ObterAsync(HistoricoQuery historicoQuery)
     {
-        return await _categoriaRep.ObterAsync();
+        return await _categoriaRep.ObterAsync(historicoQuery);
     }
 
     public async Task<IEnumerable<CategoriaResponse>> IncluirAsync(CategoriaCadastroRequest categoria)
